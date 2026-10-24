@@ -1,0 +1,279 @@
+<resources>
+    <string name="app_name" translatable="false">Argus</string>
+    <string name="home_intro">Argus checks your text messages and WhatsApp messages and warns you about scams.</string>
+    <string name="switch_to_hindi">Change to Hindi</string>
+    <string name="switch_to_english">Change to English</string>
+
+    <!-- Device check (setup) -->
+    <string name="device_supported">This phone can run Argus.</string>
+    <string name="device_slow">This phone can run Argus, but it may be slow.</string>
+    <string name="device_not_supported">Argus can\'t run on this phone.</string>
+    <string name="device_issue_not_64_bit">This phone is too old for Argus. It can\'t run the safety checker.</string>
+    <string name="device_issue_ram_too_low">This phone doesn\'t have enough memory to run Argus.</string>
+    <string name="device_issue_storage_too_low">There isn\'t enough free space. Free up about %1$s GB, then try again.</string>
+    <string name="device_issue_ram_low">This phone has little memory, so warnings may take longer.</string>
+    <string name="device_issue_old_android">This phone has an older Android version, so warnings may take longer.</string>
+
+    <!-- Fixed reasons for rule decisions (never model-written) -->
+    <string name="reason_asks_for_code">It asks for a secret code, PIN, BVN or card details.</string>
+    <string name="advice_asks_for_code">Never share these with anyone, even if they say they are your bank.</string>
+    <string name="reason_account_problem">It says your account has a problem and asks you to act.</string>
+    <string name="advice_account_problem">Don\'t click or call. Ask your family, or go to your bank yourself.</string>
+    <string name="reason_too_good_offer">It promises a prize, job or loan but wants money or a click first.</string>
+    <string name="advice_too_good_offer">Real prizes and jobs don\'t ask you to pay first. Don\'t pay.</string>
+    <string name="reason_fake_official">It claims to be a bank or official and asks for money or a click.</string>
+    <string name="advice_fake_official">Banks never ask like this. Call your family before you do anything.</string>
+    <string name="reason_asks_for_money_or_link">It asks you to send money or open a link.</string>
+    <string name="advice_asks_for_money_or_link">Make sure you know the sender. Call them on the number you know first.</string>
+    <string name="reason_pressure">It pushes you to act fast and to call or reply.</string>
+    <string name="advice_pressure">Take your time. Call your family before you reply.</string>
+    <string name="reason_warning_signs">This message has warning signs.</string>
+    <string name="advice_warning_signs">Call your family before you reply, click or pay.</string>
+    <string name="reason_account_or_offer">It says your account has a problem or promises you something, and asks you to act.</string>
+    <string name="advice_account_or_offer">Don\'t click, call or pay. Ask your family first.</string>
+    <string name="reason_money_under_pressure">It asks for money in a hurry, or from a new number.</string>
+    <string name="advice_money_under_pressure">Call the person on the number you already know before you send anything.</string>
+    <string name="reason_link_or_number">It wants you to open a link or call a number.</string>
+    <string name="advice_link_or_number">Don\'t click or call. Ask your family first.</string>
+
+    <!-- Home: Argus is off -->
+    <string name="home_off_title">Argus is off</string>
+    <string name="home_fix">Fix it</string>
+
+    <!-- How the app addresses the parent -->
+    <string name="title_mummy">Mummy</string>
+    <string name="title_daddy">Daddy</string>
+    <string name="title_grandma">Grandma</string>
+    <string name="your_family">your family</string>
+
+    <!-- Alerts: fixed words per level, never the message, the sender or the model's words -->
+    <string name="alert_scam_headline_named">%1$s, stop! This looks like a scam.</string>
+    <string name="alert_scam_headline">Stop! This looks like a scam.</string>
+    <string name="alert_careful_headline_named">%1$s, be careful with this message.</string>
+    <string name="alert_careful_headline">Be careful with this message.</string>
+    <string name="alert_otp_headline">This is a secret code.</string>
+    <string name="alert_none_headline">No warning signs found.</string>
+    <string name="alert_scam_body">Don\'t send money, don\'t click any link and don\'t share any code.</string>
+    <string name="alert_careful_body">Call %1$s before you reply or pay anything.</string>
+    <string name="alert_otp_body">Never share this code with anyone, even someone who says they are your bank.</string>
+    <string name="alert_none_body">If in doubt, call %1$s.</string>
+    <string name="alert_public_title">Argus warning</string>
+    <string name="alert_public_body">Unlock your phone to see it.</string>
+    <string name="channel_scam">Scam warnings</string>
+    <string name="channel_careful">Be careful and secret code reminders</string>
+
+    <!-- Warning screen -->
+    <string name="warning_call">Call %1$s</string>
+    <string name="warning_call_family">Call your family</string>
+    <string name="warning_hear_again">Hear it again</string>
+    <string name="warning_understand">I understand</string>
+
+    <!-- Check a message -->
+    <string name="check_title">Check a message</string>
+    <string name="check_hint">Paste or type the message here</string>
+    <string name="check_button">Check</string>
+    <string name="check_checking">Checking…</string>
+    <string name="check_not_ready">Argus is not ready yet. Finish setup first.</string>
+    <string name="check_failed">Argus couldn\'t check this message. If in doubt, call %1$s.</string>
+
+    <!-- Family SMS: always English, it goes to the family member. No reason, no sender. -->
+    <string name="family_sms" translatable="false">Argus: %1$s just received a likely scam message. Please give %1$s a call.</string>
+    <string name="family_sms_neutral" translatable="false">Argus: Your parent just received a likely scam message. Please give them a call.</string>
+
+    <!-- Who sent it, on the warning screen and in the private notification -->
+    <string name="from_sms">From: %1$s (SMS)</string>
+    <string name="from_whatsapp">From: %1$s (WhatsApp)</string>
+
+    <!-- Reasons built from what the rules found: "It has a link and says your account is blocked." -->
+    <string name="reason_one">It %1$s.</string>
+    <string name="reason_two">It %1$s and %2$s.</string>
+    <string name="finding_asks_for">asks for your %1$s</string>
+    <string name="secret_password">password</string>
+    <string name="secret_card">card details</string>
+    <string name="secret_code">secret code</string>
+    <string name="finding_link">has a link</string>
+    <string name="finding_account">says your account is %1$s</string>
+    <string name="trouble_blocked">blocked</string>
+    <string name="trouble_suspended">suspended</string>
+    <string name="trouble_restricted">restricted</string>
+    <string name="trouble_closed">closed</string>
+    <string name="finding_verify">asks you to verify or update your account</string>
+    <string name="finding_new_number">says it is from a new number</string>
+    <string name="finding_prize">promises a prize, job or loan</string>
+    <string name="finding_money">asks you to send money</string>
+    <string name="finding_official">claims to be a bank or an official</string>
+    <string name="finding_phone">gives a phone number to call</string>
+    <string name="finding_urgency">rushes you to act fast</string>
+
+    <string name="home_family_sms_failed">Family alert couldn\'t be sent. Check airtime.</string>
+
+    <!-- Setup wizard -->
+    <string name="setup_step">Step %1$d of %2$d</string>
+    <string name="setup_next">Next</string>
+    <string name="setup_done">Done</string>
+    <string name="setup_try_again">Try again</string>
+    <string name="setup_open_settings">Open settings</string>
+    <string name="setup_open_app_info">Open App info</string>
+
+    <string name="setup_phone_title">Checking this phone</string>
+    <string name="setup_phone_not_supported_body">We\'re sorry. Nothing was changed on this phone. Argus needs a newer phone to work.</string>
+
+    <string name="setup_ready_title">Getting Argus ready</string>
+    <string name="setup_ready_progress">Getting Argus ready… %1$d%%</string>
+    <string name="setup_ready_checking">Checking it works…</string>
+    <string name="setup_ready_keep_open">Keep this screen open. It can take a minute or two.</string>
+    <string name="setup_ready_no_space">Free up about %1$s GB, then tap Try again.</string>
+    <string name="setup_ready_missing">This copy of Argus is missing its safety checker. Download Argus again.</string>
+    <string name="setup_ready_failed">Something went wrong while getting ready. Tap Try again.</string>
+    <string name="setup_ready_done">Argus is ready.</string>
+
+    <string name="setup_who_title">Who is this phone for?</string>
+    <string name="setup_who_call_them">What do you call them?</string>
+    <string name="title_their_name">Their name</string>
+    <string name="setup_who_custom_name">Their name</string>
+    <string name="setup_who_language">Language</string>
+    <string name="language_english">English</string>
+    <string name="language_hindi">हिन्दी (Hindi)</string>
+    <string name="setup_who_family_name">Your name (for the Call button)</string>
+    <string name="setup_who_family_number">Your phone number</string>
+    <string name="setup_who_family_alerts">Text me when a scam is found</string>
+    <string name="setup_who_family_alerts_hint">Sends you a short SMS from this phone. It never includes the message.</string>
+    <string name="problem_no_title">Pick what you call them.</string>
+    <string name="problem_no_custom_name">Type their name.</string>
+    <string name="problem_no_family_name">Type your name.</string>
+    <string name="problem_bad_number">Type a phone number, like 0803 123 4567.</string>
+
+    <string name="setup_sms_title">Text messages</string>
+    <string name="setup_sms_why">So Argus can check text messages. They never leave the phone.</string>
+    <string name="setup_sms_why_send">It can also send you an SMS when a scam is found.</string>
+    <string name="setup_sms_button">Allow text messages</string>
+
+    <string name="setup_notifications_title">Warnings</string>
+    <string name="setup_notifications_why">So Argus can show its warnings on the screen.</string>
+    <string name="setup_notifications_button">Allow warnings</string>
+
+    <string name="setup_access_title">WhatsApp messages</string>
+    <string name="setup_access_why">So Argus can check WhatsApp messages. On the next screen, turn on Argus, then come back.</string>
+
+    <string name="setup_restricted_title">Android blocked it</string>
+    <string name="setup_restricted_why">Did Android say \"Restricted setting\"? That is normal for apps that are not from the Play Store. Do this once:</string>
+    <string name="setup_restricted_step1">1. Tap \"Open App info\" below.</string>
+    <string name="setup_restricted_step2">2. Tap the three dots (⋮) at the top right.</string>
+    <string name="setup_restricted_step3">3. Tap \"Allow restricted settings\" and confirm.</string>
+    <string name="setup_restricted_step4">4. Come back here and tap \"Turn on WhatsApp checking\".</string>
+    <string name="setup_restricted_access">Turn on WhatsApp checking</string>
+
+    <string name="setup_full_screen_title">Red warning on the lock screen</string>
+    <string name="setup_full_screen_why">So the red warning can fill the screen, even when the phone is locked. On the next screen, turn on Argus, then come back.</string>
+
+    <string name="setup_battery_title">Keep Argus running</string>
+    <string name="setup_battery_why">So the phone doesn\'t stop Argus to save battery. It uses very little.</string>
+    <string name="setup_battery_button">Allow</string>
+
+    <string name="setup_maker_title">One more setting for this phone</string>
+    <string name="setup_maker_transsion">Tecno, Infinix and itel phones stop apps in the background. Turn on Auto-start for Argus:</string>
+    <string name="setup_maker_transsion_step1">1. Open Settings and search for \"Auto-start\" (or open Phone Master).</string>
+    <string name="setup_maker_transsion_step2">2. Find Argus and turn it on.</string>
+    <string name="setup_maker_xiaomi">Xiaomi, Redmi and POCO phones need three settings for Argus:</string>
+    <string name="setup_maker_xiaomi_step1">1. Tap \"Open App info\" below and turn on \"Autostart\".</string>
+    <string name="setup_maker_xiaomi_step2">2. Tap \"Other permissions\" and allow \"Show on lock screen\".</string>
+    <string name="setup_maker_xiaomi_step3">3. In the same list, allow \"Display pop-up windows while running in background\".</string>
+    <string name="setup_maker_back">Then come back here and tap \"I\'ve done this\".</string>
+    <string name="setup_maker_done">I\'ve done this</string>
+
+    <string name="setup_test_title">Test it</string>
+    <string name="setup_test_why">Send a pretend scam message to see and hear the warning, the way it will look for real.</string>
+    <string name="setup_test_family_note">This also texts %1$s, because family alerts are on.</string>
+    <string name="setup_test_button">Send a test scam</string>
+    <string name="setup_test_sending">Sending…</string>
+    <string name="setup_test_failed">The test didn\'t work. Check that warnings are allowed, then try again.</string>
+    <string name="setup_test_message">Dear customer, your BVN is blocked. Click bit.ly/argus-test to update it today.</string>
+    <string name="setup_test_sender">Argus test</string>
+    <string name="setup_test_again">Send another test</string>
+    <string name="protecting">Argus is protecting %1$s</string>
+    <string name="protecting_plain">Argus is protecting this phone</string>
+    <string name="setup_finish">Finish</string>
+
+    <!-- Home status rows -->
+    <string name="status_sms_ok">Checking text messages</string>
+    <string name="status_sms_off">Can\'t check text messages</string>
+    <string name="status_notifications_ok">Warnings can show</string>
+    <string name="status_notifications_off">Warnings can\'t show</string>
+    <string name="status_whatsapp_ok">Checking WhatsApp messages</string>
+    <string name="status_whatsapp_off">Can\'t check WhatsApp messages</string>
+    <string name="status_full_screen_ok">Red warning can show on the lock screen</string>
+    <string name="status_full_screen_off">Red warning can\'t show on the lock screen</string>
+    <string name="status_battery_ok">Allowed to keep running</string>
+    <string name="status_battery_off">The phone may stop Argus to save battery</string>
+    <string name="status_on">On</string>
+    <string name="home_change_settings">Change settings</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_speak_on_silent">Speak warnings even when the phone is on silent</string>
+    <string name="settings_save">Save</string>
+    <string name="settings_saved">Saved</string>
+    <string name="settings_back">Back</string>
+
+    <!-- dev builds only: where a screenshot goes -->
+    <string name="image_slot" translatable="false">Picture goes here: res/drawable-nodpi/%1$s.png</string>
+
+    <!-- Design pass: chat bubble (read by TalkBack) -->
+    <string name="bubble_message">Message: %1$s</string>
+    <string name="bubble_marked">Marked as dangerous: %1$s.</string>
+    <string name="mark_link">a link</string>
+    <string name="mark_secret">a request for a secret code</string>
+    <string name="mark_account">an account threat</string>
+    <string name="mark_money">a money amount</string>
+    <string name="mark_new_number">a new number</string>
+    <string name="mark_prize">a prize</string>
+    <string name="mark_phone">a phone number</string>
+
+    <!-- Home -->
+    <string name="home_protected">%1$s is protected</string>
+    <string name="home_protected_plain">This phone is protected</string>
+    <string name="home_protected_detail">Argus is checking text and WhatsApp messages on this phone.</string>
+    <string name="home_off_fix">Needs fixing: %1$s.</string>
+    <string name="status_label_model">Safety checker</string>
+    <string name="status_model_off">The safety checker (Gemma) isn\'t working. Tap Fix it to set it up again.</string>
+    <string name="status_label_overlay">Warning over other apps</string>
+    <string name="status_overlay_off">Recommended. Without it, the red warning fills the screen only when the phone is locked.</string>
+    <string name="home_turn_on">Turn on</string>
+    <string name="setup_overlay_title">Warning over other apps</string>
+    <string name="setup_overlay_why">Recommended. So the red warning can cover the screen while the phone is in use, not only when it is locked. On the next screen, turn on Argus, then come back.</string>
+    <string name="setup_overlay_skip">Not now</string>
+    <string name="warning_count">%1$d warnings</string>
+    <string name="status_label_sms">Text messages</string>
+    <string name="status_label_notifications">Warnings</string>
+    <string name="status_label_whatsapp">WhatsApp messages</string>
+    <string name="status_label_full_screen">Lock-screen warning</string>
+    <string name="status_label_battery">Running in the background</string>
+    <string name="state_on">On</string>
+    <string name="state_off">Off</string>
+    <string name="home_check">Check a message</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_about">About</string>
+    <string name="check_intro">Paste or type the message below. Argus checks it on this phone.</string>
+
+    <!-- About -->
+    <string name="about_title">About Argus</string>
+    <string name="about_offline">Argus works offline. It has no internet permission, so no message can ever leave this phone.</string>
+    <string name="about_how_title">How Argus protects you</string>
+    <string name="about_how_read">When a text message or WhatsApp message arrives, Argus reads it here on this phone.</string>
+    <string name="about_how_rules">Clear scam signs, like a link with \"your BVN is blocked\", raise the alarm at once.</string>
+    <string name="about_how_model">Everything else is checked by Gemma, an AI model by Google that runs on this phone.</string>
+    <string name="about_how_alert">If a message looks like a scam, the phone shows a red warning and speaks. It never tells you a message is safe: if in doubt, call your family.</string>
+    <string name="about_privacy_title">Your messages stay on this phone</string>
+    <string name="about_privacy">Messages are never saved and never sent anywhere. The only thing Argus can send is the text to your family when a scam arrives, and that text never includes the message or who sent it.</string>
+    <string name="about_terms_show">Read the Gemma Terms of Use</string>
+    <string name="about_terms_hide">Hide the Gemma Terms of Use</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_model">The safety checker is Gemma, an AI model by Google, running on this phone.</string>
+    <string name="about_gemma" translatable="false">Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms</string>
+    <string name="about_font">Text font: Atkinson Hyperlegible Next by the Braille Institute, under the SIL Open Font License 1.1.</string>
+    <string name="about_voice">Voice by ElevenLabs.</string>
+    <string name="about_licences">Licences</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_check">Check</string>
+</resources>
