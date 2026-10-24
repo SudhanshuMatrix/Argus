@@ -1,0 +1,1 @@
+Your Opay wallet has been temporarily limited. Update your NIN within 24hrs via opay-ng-update.com to continue transactions.
