@@ -16,7 +16,8 @@ fun signing(name: String, env: String): String? = keyProperties.getProperty(name
 
 android {
     namespace = "com.ajayinnovations.argus"
-    compileSdk = flutter.compileSdkVersion
+    // permission_handler_android needs 37
+    compileSdk = maxOf(flutter.compileSdkVersion, 37)
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
