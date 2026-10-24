@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- AppCompat parent because MainActivity is an AppCompatActivity (per-app language) -->
-    <style name="Theme.Argus" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/white</item>
-    </style>
-</resources>
