@@ -1,0 +1,423 @@
+{
+  "@@locale": "en",
+  "homeIntro": "Argus checks your text messages and WhatsApp messages and warns you about scams.",
+  "deviceSupported": "This phone can run Argus.",
+  "deviceSlow": "This phone can run Argus, but it may be slow.",
+  "deviceNotSupported": "Argus can't run on this phone.",
+  "deviceIssueNot64Bit": "This phone is too old for Argus. It can't run the safety checker.",
+  "deviceIssueRamTooLow": "This phone doesn't have enough memory to run Argus.",
+  "deviceIssueStorageTooLow": "There isn't enough free space. Free up about {arg1} GB, then try again.",
+  "@deviceIssueStorageTooLow": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "deviceIssueRamLow": "This phone has little memory, so warnings may take longer.",
+  "deviceIssueOldAndroid": "This phone has an older Android version, so warnings may take longer.",
+  "reasonAsksForCode": "It asks for a secret code, PIN, BVN or card details.",
+  "adviceAsksForCode": "Never share these with anyone, even if they say they are your bank.",
+  "reasonAccountProblem": "It says your account has a problem and asks you to act.",
+  "adviceAccountProblem": "Don't click or call. Ask your family, or go to your bank yourself.",
+  "reasonTooGoodOffer": "It promises a prize, job or loan but wants money or a click first.",
+  "adviceTooGoodOffer": "Real prizes and jobs don't ask you to pay first. Don't pay.",
+  "reasonFakeOfficial": "It claims to be a bank or official and asks for money or a click.",
+  "adviceFakeOfficial": "Banks never ask like this. Call your family before you do anything.",
+  "reasonAsksForMoneyOrLink": "It asks you to send money or open a link.",
+  "adviceAsksForMoneyOrLink": "Make sure you know the sender. Call them on the number you know first.",
+  "reasonPressure": "It pushes you to act fast and to call or reply.",
+  "advicePressure": "Take your time. Call your family before you reply.",
+  "reasonWarningSigns": "This message has warning signs.",
+  "adviceWarningSigns": "Call your family before you reply, click or pay.",
+  "reasonAccountOrOffer": "It says your account has a problem or promises you something, and asks you to act.",
+  "adviceAccountOrOffer": "Don't click, call or pay. Ask your family first.",
+  "reasonMoneyUnderPressure": "It asks for money in a hurry, or from a new number.",
+  "adviceMoneyUnderPressure": "Call the person on the number you already know before you send anything.",
+  "reasonLinkOrNumber": "It wants you to open a link or call a number.",
+  "adviceLinkOrNumber": "Don't click or call. Ask your family first.",
+  "homeOffTitle": "Argus is off",
+  "homeFix": "Fix it",
+  "titleMummy": "Mummy",
+  "titleDaddy": "Daddy",
+  "titleGrandma": "Grandma",
+  "yourFamily": "your family",
+  "alertScamHeadlineNamed": "{arg1}, stop! This looks like a scam.",
+  "@alertScamHeadlineNamed": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "alertScamHeadline": "Stop! This looks like a scam.",
+  "alertCarefulHeadlineNamed": "{arg1}, be careful with this message.",
+  "@alertCarefulHeadlineNamed": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "alertCarefulHeadline": "Be careful with this message.",
+  "alertOtpHeadline": "This is a secret code.",
+  "alertNoneHeadline": "No warning signs found.",
+  "alertScamBody": "Don't send money, don't click any link and don't share any code.",
+  "alertCarefulBody": "Call {arg1} before you reply or pay anything.",
+  "@alertCarefulBody": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "alertOtpBody": "Never share this code with anyone, even someone who says they are your bank.",
+  "alertNoneBody": "If in doubt, call {arg1}.",
+  "@alertNoneBody": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "alertPublicTitle": "Argus warning",
+  "alertPublicBody": "Unlock your phone to see it.",
+  "channelScam": "Scam warnings",
+  "channelCareful": "Be careful and secret code reminders",
+  "warningCall": "Call {arg1}",
+  "@warningCall": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "warningCallFamily": "Call your family",
+  "warningHearAgain": "Hear it again",
+  "warningUnderstand": "I understand",
+  "checkTitle": "Check a message",
+  "checkHint": "Paste or type the message here",
+  "checkButton": "Check",
+  "checkChecking": "Checking…",
+  "checkNotReady": "Argus is not ready yet. Finish setup first.",
+  "checkFailed": "Argus couldn't check this message. If in doubt, call {arg1}.",
+  "@checkFailed": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "familySms": "Argus: {arg1} just received a likely scam message. Please give {arg1} a call.",
+  "@familySms": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "familySmsNeutral": "Argus: Your parent just received a likely scam message. Please give them a call.",
+  "fromSms": "From: {arg1} (SMS)",
+  "@fromSms": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "fromWhatsapp": "From: {arg1} (WhatsApp)",
+  "@fromWhatsapp": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "reasonOne": "It {arg1}.",
+  "@reasonOne": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "reasonTwo": "It {arg1} and {arg2}.",
+  "@reasonTwo": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      },
+      "arg2": {
+        "type": "String"
+      }
+    }
+  },
+  "findingAsksFor": "asks for your {arg1}",
+  "@findingAsksFor": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "secretPassword": "password",
+  "secretCard": "card details",
+  "secretCode": "secret code",
+  "findingLink": "has a link",
+  "findingAccount": "says your account is {arg1}",
+  "@findingAccount": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "troubleBlocked": "blocked",
+  "troubleSuspended": "suspended",
+  "troubleRestricted": "restricted",
+  "troubleClosed": "closed",
+  "findingVerify": "asks you to verify or update your account",
+  "findingNewNumber": "says it is from a new number",
+  "findingPrize": "promises a prize, job or loan",
+  "findingMoney": "asks you to send money",
+  "findingOfficial": "claims to be a bank or an official",
+  "findingPhone": "gives a phone number to call",
+  "findingUrgency": "rushes you to act fast",
+  "homeFamilySmsFailed": "Family alert couldn't be sent. Check airtime.",
+  "setupStep": "Step {arg1} of {arg2}",
+  "@setupStep": {
+    "placeholders": {
+      "arg1": {
+        "type": "int"
+      },
+      "arg2": {
+        "type": "int"
+      }
+    }
+  },
+  "setupNext": "Next",
+  "setupDone": "Done",
+  "setupTryAgain": "Try again",
+  "setupOpenSettings": "Open settings",
+  "setupOpenAppInfo": "Open App info",
+  "setupPhoneTitle": "Checking this phone",
+  "setupPhoneNotSupportedBody": "We're sorry. Nothing was changed on this phone. Argus needs a newer phone to work.",
+  "setupReadyTitle": "Getting Argus ready",
+  "setupReadyProgress": "Getting Argus ready… {arg1}%",
+  "@setupReadyProgress": {
+    "placeholders": {
+      "arg1": {
+        "type": "int"
+      }
+    }
+  },
+  "setupReadyChecking": "Checking it works…",
+  "setupReadyKeepOpen": "Keep this screen open. It can take a minute or two.",
+  "setupReadyNoSpace": "Free up about {arg1} GB, then tap Try again.",
+  "@setupReadyNoSpace": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "setupReadyMissing": "This copy of Argus is missing its safety checker. Download Argus again.",
+  "setupReadyFailed": "Something went wrong while getting ready. Tap Try again.",
+  "setupReadyDone": "Argus is ready.",
+  "setupWhoTitle": "Who is this phone for?",
+  "setupWhoCallThem": "What do you call them?",
+  "titleTheirName": "Their name",
+  "setupWhoCustomName": "Their name",
+  "setupWhoLanguage": "Language",
+  "languageEnglish": "English",
+  "languageHindi": "हिन्दी (Hindi)",
+  "setupWhoFamilyName": "Your name (for the Call button)",
+  "setupWhoFamilyNumber": "Your phone number",
+  "setupWhoFamilyAlerts": "Text me when a scam is found",
+  "setupWhoFamilyAlertsHint": "Sends you a short SMS from this phone. It never includes the message.",
+  "problemNoTitle": "Pick what you call them.",
+  "problemNoCustomName": "Type their name.",
+  "problemNoFamilyName": "Type your name.",
+  "problemBadNumber": "Type a phone number, like 0803 123 4567.",
+  "setupSmsTitle": "Text messages",
+  "setupSmsWhy": "So Argus can check text messages. They never leave the phone.",
+  "setupSmsWhySend": "It can also send you an SMS when a scam is found.",
+  "setupSmsButton": "Allow text messages",
+  "setupNotificationsTitle": "Warnings",
+  "setupNotificationsWhy": "So Argus can show its warnings on the screen.",
+  "setupNotificationsButton": "Allow warnings",
+  "setupAccessTitle": "WhatsApp messages",
+  "setupAccessWhy": "So Argus can check WhatsApp messages. On the next screen, turn on Argus, then come back.",
+  "setupRestrictedTitle": "Android blocked it",
+  "setupRestrictedWhy": "Did Android say \"Restricted setting\"? That is normal for apps that are not from the Play Store. Do this once:",
+  "setupRestrictedStep1": "1. Tap \"Open App info\" below.",
+  "setupRestrictedStep2": "2. Tap the three dots (⋮) at the top right.",
+  "setupRestrictedStep3": "3. Tap \"Allow restricted settings\" and confirm.",
+  "setupRestrictedStep4": "4. Come back here and tap \"Turn on WhatsApp checking\".",
+  "setupRestrictedAccess": "Turn on WhatsApp checking",
+  "setupFullScreenTitle": "Red warning on the lock screen",
+  "setupFullScreenWhy": "So the red warning can fill the screen, even when the phone is locked. On the next screen, turn on Argus, then come back.",
+  "setupBatteryTitle": "Keep Argus running",
+  "setupBatteryWhy": "So the phone doesn't stop Argus to save battery. It uses very little.",
+  "setupBatteryButton": "Allow",
+  "setupMakerTitle": "One more setting for this phone",
+  "setupMakerTranssion": "Tecno, Infinix and itel phones stop apps in the background. Turn on Auto-start for Argus:",
+  "setupMakerTranssionStep1": "1. Open Settings and search for \"Auto-start\" (or open Phone Master).",
+  "setupMakerTranssionStep2": "2. Find Argus and turn it on.",
+  "setupMakerXiaomi": "Xiaomi, Redmi and POCO phones need three settings for Argus:",
+  "setupMakerXiaomiStep1": "1. Tap \"Open App info\" below and turn on \"Autostart\".",
+  "setupMakerXiaomiStep2": "2. Tap \"Other permissions\" and allow \"Show on lock screen\".",
+  "setupMakerXiaomiStep3": "3. In the same list, allow \"Display pop-up windows while running in background\".",
+  "setupMakerBack": "Then come back here and tap \"I've done this\".",
+  "setupMakerDone": "I've done this",
+  "setupTestTitle": "Test it",
+  "setupTestWhy": "Send a pretend scam message to see and hear the warning, the way it will look for real.",
+  "setupTestFamilyNote": "This also texts {arg1}, because family alerts are on.",
+  "@setupTestFamilyNote": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "setupTestButton": "Send a test scam",
+  "setupTestSending": "Sending…",
+  "setupTestFailed": "The test didn't work. Check that warnings are allowed, then try again.",
+  "setupTestMessage": "Dear customer, your BVN is blocked. Click bit.ly/argus-test to update it today.",
+  "setupTestSender": "Argus test",
+  "setupTestAgain": "Send another test",
+  "protecting": "Argus is protecting {arg1}",
+  "@protecting": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "protectingPlain": "Argus is protecting this phone",
+  "setupFinish": "Finish",
+  "statusSmsOk": "Checking text messages",
+  "statusSmsOff": "Can't check text messages",
+  "statusNotificationsOk": "Warnings can show",
+  "statusNotificationsOff": "Warnings can't show",
+  "statusWhatsappOk": "Checking WhatsApp messages",
+  "statusWhatsappOff": "Can't check WhatsApp messages",
+  "statusFullScreenOk": "Red warning can show on the lock screen",
+  "statusFullScreenOff": "Red warning can't show on the lock screen",
+  "statusBatteryOk": "Allowed to keep running",
+  "statusBatteryOff": "The phone may stop Argus to save battery",
+  "statusOn": "On",
+  "homeChangeSettings": "Change settings",
+  "settingsTitle": "Settings",
+  "settingsSpeakOnSilent": "Speak warnings even when the phone is on silent",
+  "settingsSave": "Save",
+  "settingsSaved": "Saved",
+  "settingsBack": "Back",
+  "bubbleMessage": "Message: {arg1}",
+  "@bubbleMessage": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "bubbleMarked": "Marked as dangerous: {arg1}.",
+  "@bubbleMarked": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "markLink": "a link",
+  "markSecret": "a request for a secret code",
+  "markAccount": "an account threat",
+  "markMoney": "a money amount",
+  "markNewNumber": "a new number",
+  "markPrize": "a prize",
+  "markPhone": "a phone number",
+  "homeProtected": "{arg1} is protected",
+  "@homeProtected": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "homeProtectedPlain": "This phone is protected",
+  "homeProtectedDetail": "Argus is checking text and WhatsApp messages on this phone.",
+  "homeOffFix": "Needs fixing: {arg1}.",
+  "@homeOffFix": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "statusLabelModel": "Safety checker",
+  "statusModelOff": "The safety checker (Gemma) isn't working. Tap Fix it to set it up again.",
+  "statusLabelOverlay": "Warning over other apps",
+  "statusOverlayOff": "Recommended. Without it, the red warning fills the screen only when the phone is locked.",
+  "homeTurnOn": "Turn on",
+  "setupOverlayTitle": "Warning over other apps",
+  "setupOverlayWhy": "Recommended. So the red warning can cover the screen while the phone is in use, not only when it is locked. On the next screen, turn on Argus, then come back.",
+  "setupOverlaySkip": "Not now",
+  "warningCount": "{arg1} warnings",
+  "@warningCount": {
+    "placeholders": {
+      "arg1": {
+        "type": "int"
+      }
+    }
+  },
+  "statusLabelSms": "Text messages",
+  "statusLabelNotifications": "Warnings",
+  "statusLabelWhatsapp": "WhatsApp messages",
+  "statusLabelFullScreen": "Lock-screen warning",
+  "statusLabelBattery": "Running in the background",
+  "stateOn": "On",
+  "stateOff": "Off",
+  "homeCheck": "Check a message",
+  "navSettings": "Settings",
+  "navAbout": "About",
+  "checkIntro": "Paste or type the message below. Argus checks it on this phone.",
+  "aboutTitle": "About Argus",
+  "aboutOffline": "Argus works offline. It has no internet permission, so no message can ever leave this phone.",
+  "aboutHowTitle": "How Argus protects you",
+  "aboutHowRead": "When a text message or WhatsApp message arrives, Argus reads it here on this phone.",
+  "aboutHowRules": "Clear scam signs, like a link with \"your BVN is blocked\", raise the alarm at once.",
+  "aboutHowModel": "Everything else is checked by Gemma, an AI model by Google that runs on this phone.",
+  "aboutHowAlert": "If a message looks like a scam, the phone shows a red warning and speaks. It never tells you a message is safe: if in doubt, call your family.",
+  "aboutPrivacyTitle": "Your messages stay on this phone",
+  "aboutPrivacy": "Messages are never saved and never sent anywhere. The only thing Argus can send is the text to your family when a scam arrives, and that text never includes the message or who sent it.",
+  "aboutTermsShow": "Read the Gemma Terms of Use",
+  "aboutTermsHide": "Hide the Gemma Terms of Use",
+  "aboutVersion": "Version {arg1}",
+  "@aboutVersion": {
+    "placeholders": {
+      "arg1": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutModel": "The safety checker is Gemma, an AI model by Google, running on this phone.",
+  "aboutFont": "Text font: Atkinson Hyperlegible Next by the Braille Institute, under the SIL Open Font License 1.1.",
+  "aboutVoice": "Voice by ElevenLabs.",
+  "aboutLicences": "Licences",
+  "tabHome": "Home",
+  "tabCheck": "Check",
+  "setupWelcomeTitle": "Welcome to Argus",
+  "setupStart": "Start",
+  "setupAllowed": "Allowed",
+  "setupSkip": "Skip for now",
+  "setupAccessButton": "Turn on WhatsApp checking",
+  "setupFullScreenButton": "Allow the full-screen warning",
+  "aboutHowRulesOnly": "This version checks every message with fixed scam rules that run on this phone. An AI checker that also runs on the phone is coming next.",
+  "aboutBasedOn": "Argus is based on ScamGuard by Abraham Golor, used with his permission.",
+  "checkEmpty": "Type or paste a message first.",
+  "warningMessageLabel": "The message",
+  "warningWhy": "Why",
+  "warningWhatToDo": "What to do",
+  "notificationTapToSee": "Tap to see the warning.",
+  "checkHearIt": "Hear the warning"
+}

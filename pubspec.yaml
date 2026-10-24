@@ -1,0 +1,41 @@
+name: argus
+description: "Argus: an offline scam protector for parents' Android phones."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  another_telephony: ^0.4.1
+  audioplayers: ^6.8.1
+  flutter_local_notifications: ^22.3.2
+  flutter_notification_listener: ^1.4.0
+  intl: ^0.20.3
+  permission_handler: ^13.0.2
+  shared_preferences: ^2.5.6
+  url_launcher: ^6.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/voice/
+  fonts:
+    - family: Atkinson
+      fonts:
+        - asset: assets/fonts/atkinson_hyperlegible_next_regular.ttf
+          weight: 400
+        - asset: assets/fonts/atkinson_hyperlegible_next_semibold.ttf
+          weight: 600
+        - asset: assets/fonts/atkinson_hyperlegible_next_bold.ttf
+          weight: 700
