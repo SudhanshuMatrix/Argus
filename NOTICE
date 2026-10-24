@@ -8,8 +8,9 @@ The ScamGuard repository does not carry an open-source licence. Its code is
 used, renamed and modified in Argus with the permission of its author. That
 permission was given to the Argus owner; it is not an open-source licence and
 does not extend to third parties. Changes in Argus: the product was renamed
-from ScamGuard to Argus, and the Nigerian Pidgin translation was replaced with
-Hindi.
+from ScamGuard to Argus, the Nigerian Pidgin translation was replaced with
+Hindi, and the app was rewritten in Flutter (the scam rules are a Dart port of
+the original Kotlin engine).
 
 
 Third-party material included in Argus:

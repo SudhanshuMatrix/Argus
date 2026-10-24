@@ -2,7 +2,7 @@
 
 Oct 3, 2026 · @Abraham Golor
 
-> **Argus note:** this plan and build log come from the upstream ScamGuard project by Abraham Golor (see [NOTICE](../NOTICE)) and are kept as its history. Argus changes two things: the product is renamed Argus (package `com.ajayinnovations.argus`), and the app speaks **English and Hindi** (`values/` and `values-hi/`) instead of English and Nigerian Pidgin. Hindi voice clips are not recorded yet, so Hindi warnings play the English clip. Measurements below that mention Pidgin were taken upstream on Pidgin test messages and are left as they were.
+> **Argus note:** this plan and build log come from the upstream ScamGuard project by Abraham Golor (see [NOTICE](../NOTICE)) and are kept as its history. Argus has since been rewritten in Flutter (see the README); this document describes the original Kotlin app and the planned Gemma step. Argus changes two things: the product is renamed Argus (package `com.ajayinnovations.argus`), and the app speaks **English and Hindi** (`values/` and `values-hi/`) instead of English and Nigerian Pidgin. Hindi voice clips are not recorded yet, so Hindi warnings play the English clip. Measurements below that mention Pidgin were taken upstream on Pidgin test messages and are left as they were.
 
 Step-by-step prompts for building this with Claude Code: Claude Code playbook
 

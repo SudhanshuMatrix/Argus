@@ -1,6 +1,6 @@
 # Argus releases
 
-> The v1.0.0 notes below describe the upstream ScamGuard 1.0.0 release this code is based on (see [NOTICE](../NOTICE)), updated for Argus's English and Hindi. Argus has not published its own APK yet; checksums and the signing certificate will be added with the first Argus release.
+> Argus is now a Flutter app; its APKs come from the Build APK workflow. The v1.0.0 notes below describe the upstream ScamGuard 1.0.0 release (the Kotlin app) this project is based on (see [NOTICE](../NOTICE)), updated for Argus's English and Hindi. Argus has not published its own APK yet; checksums and the signing certificate will be added with the first Argus release.
 
 ## v1.0.0 (October 4, 2026)
 
