@@ -1,0 +1,1 @@
+ALERT: Your account has been restricted due to a suspicious login. Kindly verify your details at www.zentra-secure-verify.com to restore access. Failure to verify will lead to permanent closure of your account.

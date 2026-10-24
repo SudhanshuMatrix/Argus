@@ -1,0 +1,32 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/app/build
+/.kotlin
+
+# Gemma models are never committed; they ship inside release APKs only
+*.litertlm
+
+# Release signing: the passwords and the key never go in the repo
+keystore.properties
+*.jks
+*.keystore
+
+# Release files for GitHub (the APK carries the model)
+/dist
+*.apk
+
+# Android Studio project settings
+/.idea

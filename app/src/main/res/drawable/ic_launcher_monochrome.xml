@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Themed icon (Android 13+): only transparency counts, so the text lines are holes cut with
+  even-odd, and the badge is a ring with a cut-out tick.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M35,28h38a10,10 0,0 1,10 10v24a10,10 0,0 1,-10 10h-19l-13,11v-11h-6a10,10 0,0 1,-10 -10v-24a10,10 0,0 1,10 -10z M34,37h24v4.5h-24z M34,48h36v6h-36z M34,61h18v4.5h-18z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M74,34m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0z M69.2,34.6l1.7,-1.7l2,2l4.2,-4.5l1.7,1.6l-5.9,6.3z" />
+</vector>
