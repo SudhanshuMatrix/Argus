@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  App icon: a white chat bubble with a bold yellow highlighter swipe across one line of text
+  (breaking out of the bubble), and a Pine "protected" badge. Same idea as the in-app
+  highlighter on dangerous words. Kept inside the 66dp safe zone (21..87) of the 108dp canvas.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Bubble with a tail -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,28h38a10,10 0,0 1,10 10v24a10,10 0,0 1,-10 10h-19l-13,11v-11h-6a10,10 0,0 1,-10 -10v-24a10,10 0,0 1,10 -10z" />
+    <!-- Text lines -->
+    <path android:fillColor="#C9D1DC" android:pathData="M36.25,37h21.5a2.25,2.25 0,0 1,0 4.5h-21.5a2.25,2.25 0,0 1,0 -4.5z" />
+    <path android:fillColor="#C9D1DC" android:pathData="M36.25,61h15.5a2.25,2.25 0,0 1,0 4.5h-15.5a2.25,2.25 0,0 1,0 -4.5z" />
+    <!-- The highlighted line -->
+    <group android:pivotX="54" android:pivotY="50" android:rotation="-9">
+        <path android:fillColor="#FFD23F" android:pathData="M33.5,44h41a6.5,6.5 0,0 1,0 13h-41a6.5,6.5 0,0 1,0 -13z" />
+        <path android:fillColor="#0E1B33" android:pathData="M37.25,48.25h25.5a2.25,2.25 0,0 1,0 4.5h-25.5a2.25,2.25 0,0 1,0 -4.5z" />
+    </group>
+    <!-- Protected badge -->
+    <path
+        android:fillColor="#07594C"
+        android:strokeColor="#0E1B33"
+        android:strokeWidth="3"
+        android:pathData="M74,34m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M70,34.2l2.8,2.8l5.2,-5.6" />
+</vector>

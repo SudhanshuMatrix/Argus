@@ -1,0 +1,17 @@
+# R8 keep rules for release (app/build.gradle.kts passes this file to proguardFiles).
+
+# LiteRT-LM 0.17.1 ships no consumer rules. Its native library (liblitertlm_jni.so) finds
+# classes, constructors, getters and callbacks by name: InputData$Text, LiteRtLmJniException,
+# SamplerConfig.getTopK/getTemperature, ThinkingConfig, the JniMessageCallback onMessage/onDone/
+# onError, BenchmarkInfo, EmbeddingResponse… Renaming or removing any of them breaks the model
+# at run time, so the whole package keeps its names and members.
+-keep class com.google.ai.edge.litertlm.** { *; }
+-keep interface com.google.ai.edge.litertlm.** { *; }
+
+# Native methods anywhere must keep their names and the classes in their signatures
+-keepclasseswithmembernames,includedescriptorclasses class * {
+    native <methods>;
+}
+
+# gson: LiteRT-LM only uses its tree API (JsonObject, JsonParser), never reflection on our
+# classes, and gson 2.14 ships its own rules in META-INF/proguard/gson.pro.
