@@ -39,6 +39,14 @@ void main() {
       expect(back.sender, 'GTBank Care');
     });
 
+    test("a live alert's payload carries its public warning text", () {
+      const live = Alert(verdict: Verdict(Level.scam), source: SourceType.live, sender: 'Argus', message: 'New scam: fake KYC links');
+      final (_, back) = AlertCodec.decode(AlertCodec.toPayload(9, live))!;
+      expect(back.message, 'New scam: fake KYC links');
+      expect(back.source, SourceType.live);
+      expect(back.sender, isNull);
+    });
+
     test('garbage decodes to null instead of throwing', () {
       expect(AlertCodec.decode('not json'), isNull);
       expect(AlertCodec.decode(null), isNull);

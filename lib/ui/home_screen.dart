@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../app/alert_text.dart';
 import '../app/app_state.dart';
+import '../app/edition.dart';
+import '../app/gemma.dart';
+import '../app/live_alerts.dart';
 import '../app/listeners.dart';
 import '../app/permissions.dart';
 import '../l10n/gen/app_localizations.dart';
@@ -44,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   Future<void> _refresh() async {
     final status = await ProtectionStatus.check();
-    if (status.whatsapp) await Listeners.startWhatsApp();
+    if (status.whatsapp && Edition.current.checksMessages) await Listeners.startWhatsApp();
     await AppState.instance.load();
     if (mounted) setState(() => _status = status);
   }
@@ -63,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final status = _status;
     final name = AlertText(l).titleName(s.title, s.customName);
     final on = status?.allOn ?? true;
+    final edition = Edition.current;
     return Scaffold(
       appBar: AppBar(title: const Text('Argus')),
       body: ArgusPage(
@@ -81,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: ArgusColors.paper),
                 ),
                 const Gap(8),
-                Text(on ? l.homeProtectedDetail : l.homeIntro, style: const TextStyle(color: ArgusColors.paper, fontSize: 18, height: 1.4)),
+                Text(edition == Edition.demo ? l.demoIntro : (on ? l.homeProtectedDetail : l.homeIntro), style: const TextStyle(color: ArgusColors.paper, fontSize: 18, height: 1.4)),
               ],
             ),
           ),
@@ -96,10 +100,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Column(
                   children: [
-                    StatusRow(label: l.statusLabelSms, ok: status.sms, stateText: status.sms ? l.stateOn : l.stateOff, fixLabel: l.homeTurnOn, onFix: () => _fix(Permissions.requestSms)),
+                    if (edition.checksMessages)
+                      StatusRow(label: l.statusLabelSms, ok: status.sms, stateText: status.sms ? l.stateOn : l.stateOff, fixLabel: l.homeTurnOn, onFix: () => _fix(Permissions.requestSms)),
                     StatusRow(label: l.statusLabelNotifications, ok: status.notifications, stateText: status.notifications ? l.stateOn : l.stateOff, fixLabel: l.homeTurnOn, onFix: () => _fix(Permissions.requestNotifications)),
-                    StatusRow(label: l.statusLabelWhatsapp, ok: status.whatsapp, stateText: status.whatsapp ? l.stateOn : l.stateOff, fixLabel: l.homeTurnOn, onFix: () => _fix(Listeners.openWhatsAppAccessSettings)),
+                    if (edition.checksMessages)
+                      StatusRow(label: l.statusLabelWhatsapp, ok: status.whatsapp, stateText: status.whatsapp ? l.stateOn : l.stateOff, fixLabel: l.homeTurnOn, onFix: () => _fix(Listeners.openWhatsAppAccessSettings)),
                     StatusRow(label: l.statusLabelBattery, ok: status.battery, stateText: status.battery ? l.stateOn : l.stateOff, fixLabel: l.homeTurnOn, onFix: () => _fix(Permissions.requestBattery)),
+                    if (edition.usesModel)
+                      StatusRow(label: l.statusLabelModelShort, ok: status.model, stateText: status.model ? l.stateOn : l.stateOff, fixLabel: l.homeTurnOn, onFix: () => _fix(() => GemmaModel.install())),
+                    if (edition.receivesLiveAlerts)
+                      StatusRow(label: l.statusLabelLive, ok: LiveAlerts.configured, stateText: LiveAlerts.configured ? l.stateOn : l.statusLiveNotSetUp),
                   ],
                 ),
               ),

@@ -3,6 +3,8 @@ import 'dart:ui';
 import '../core/alert.dart';
 import '../core/memory_limits.dart';
 import '../core/scam_checker.dart';
+import 'edition.dart';
+import 'gemma.dart';
 import '../l10n/gen/app_localizations.dart';
 import 'alert_bus.dart';
 import 'notifier.dart';
@@ -22,7 +24,9 @@ abstract final class Guard {
   static Future<(int, Alert)?> handle(IncomingMessage message, {bool test = false}) async {
     try {
       if (!test && !_deduper.isNew(message.text)) return null;
-      final result = ScamChecker.check(message.text);
+      // Hard-rule scams are decided instantly; the model only sees what the rules can't decide
+      final model = Edition.current.usesModel ? await GemmaModel.available() : null;
+      final result = await ScamChecker.checkWithModel(message.text, '${message.type.label} from ${message.sender}', model);
       final plan = AlertPlan.forLevel(result.level);
       if (plan == null) return null;
 
@@ -35,7 +39,7 @@ abstract final class Guard {
       AlertBus.publish(id, alert);
       await Notifier.show(id, alert, settings, l);
       if (_carefulLimit.allow(alert.level, alert.chatId, DateTime.now())) {
-        await _voice.play(alert.level, settings.language, settings.title, loud: settings.speakOnSilent);
+        await _voice.play(alert.level, settings.language, settings.title, loud: settings.speakOnSilent, l: l, customName: settings.customName);
       }
       if (plan.familySms) await FamilySms.send(settings, _store);
       return (id, alert);
