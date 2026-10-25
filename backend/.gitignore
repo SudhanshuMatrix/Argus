@@ -1,0 +1,4 @@
+# Service-account keys and build output never go in the repo
+*.json
+/backend
+/argus-server
