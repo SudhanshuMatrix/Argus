@@ -1,8 +1,9 @@
 import 'concrete_signs.dart';
 import 'hard_rules.dart';
+import 'patterns.dart';
 
 /// What kind of secret a message asks for.
-enum Secret { bvn, nin, otp, pin, password, card, code }
+enum Secret { bvn, nin, otp, pin, password, card, code, aadhaar, upiPin }
 
 /// The account trouble a message claims.
 enum AccountTrouble { blocked, suspended, restricted, closed }
@@ -41,30 +42,32 @@ class Finding {
   String toString() => 'Finding(${kind.name}${secret != null ? ', ${secret!.name}' : ''}${trouble != null ? ', ${trouble!.name}' : ''})';
 }
 
-RegExp _words(List<String> w) => RegExp('\\b(${w.join('|')})\\b', caseSensitive: false);
-
-bool _fullMatch(RegExp re, String s) {
-  final m = re.matchAsPrefix(s);
-  return m != null && m.end == s.length;
-}
 
 abstract final class Findings {
   static final _trouble = [
-    (AccountTrouble.blocked, _words(['blocked', 'block'])),
-    (AccountTrouble.suspended, _words(['suspended', 'suspend'])),
-    (AccountTrouble.restricted, _words(['restricted', 'restrict'])),
-    (AccountTrouble.closed, _words(['deactivated', 'closed', 'disabled'])),
+    (AccountTrouble.blocked, words(['blocked', 'block', 'ब्लॉक'])),
+    (AccountTrouble.suspended, words(['suspended', 'suspend', 'निलंबित'])),
+    (AccountTrouble.restricted, words(['restricted', 'restrict'])),
+    (AccountTrouble.closed, words(['deactivated', 'closed', 'disabled', 'disconnected', 'बंद हो'])),
   ];
-  static final _verify = _words(['verify', 'verification', 'update your account', 'update your bvn', 'update your details', 'upgrade']);
-  static final _prize = _words(['you have won', 'you won', 'winner', 'prize', 'promo', 'congratulations', 'job offer', 'loan', 'grant', 'investment', 'double your']);
+  static final _verify = words([
+    'verify', 'verification', 'update your account', 'update your bvn', 'update your details', 'upgrade',
+    'kyc', 'update your kyc', 'update your pan', 'link your aadhaar', 'केवाईसी', 'अपडेट करें',
+  ]);
+  static final _prize = words([
+    'you have won', 'you won', 'winner', 'prize', 'promo', 'congratulations', 'job offer', 'loan', 'grant', 'investment', 'double your',
+    'lottery', 'lucky draw', 'kbc', 'jackpot', 'cashback', 'work from home', 'इनाम', 'लॉटरी', 'बधाई हो',
+  ]);
   static final _secretWords = [
-    (Secret.bvn, _words(['bvn'])),
-    (Secret.nin, _words(['nin'])),
-    (Secret.otp, _words(['otp', 'token'])),
-    (Secret.pin, _words(['pin'])),
-    (Secret.password, _words(['password'])),
-    (Secret.card, _words(['card number', 'card details', 'cvv'])),
-    (Secret.code, _words(['code'])),
+    (Secret.upiPin, words(['upi pin', 'mpin'])),
+    (Secret.bvn, words(['bvn'])),
+    (Secret.nin, words(['nin'])),
+    (Secret.otp, words(['otp', 'token', 'ओटीपी'])),
+    (Secret.pin, words(['pin', 'पिन'])),
+    (Secret.password, words(['password', 'पासवर्ड'])),
+    (Secret.card, words(['card number', 'card details', 'cvv'])),
+    (Secret.aadhaar, words(['aadhaar', 'aadhar', 'आधार'])),
+    (Secret.code, words(['code', 'कोड'])),
   ];
 
   /// In order of importance; the reason uses the first two. Empty when nothing was found.
@@ -89,7 +92,7 @@ abstract final class Findings {
   /// The secret asked for: the hard rule's exact one, else any secret word in a looser request.
   static Secret? _secret(String text, bool looseRequest) {
     final word = HardRules.requestedSecret(text);
-    if (word != null) return _secretWords.firstWhere((s) => _fullMatch(s.$2, word)).$1;
+    if (word != null) return _secretWords.firstWhere((s) => fullMatch(s.$2, word)).$1;
     if (!looseRequest) return null;
     return _secretWords.where((s) => s.$2.hasMatch(text)).firstOrNull?.$1;
   }

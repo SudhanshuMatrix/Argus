@@ -1,5 +1,7 @@
 import 'concrete_signs.dart';
 import 'findings.dart';
+import 'lexicon.dart';
+import 'patterns.dart';
 
 /// What a marked stretch of the message is, for the screen reader ("Marked: BVN, link").
 enum MarkKind { link, secret, account, money, newNumber, prize, phone }
@@ -21,24 +23,25 @@ class Mark {
   String toString() => 'Mark($start, $end, ${kind.name})';
 }
 
-RegExp _words(List<String> w) => RegExp('\\b(${w.join('|')})\\b', caseSensitive: false);
 
 /// The exact dangerous parts of a message, to highlight on the warning screen: links, the
 /// secret words asked for, account threats, money amounts, "new number" phrases, prizes and
 /// phone numbers. Same patterns as the rules. Ranges never overlap.
 abstract final class Highlights {
   static final _link = RegExp(r'(https?://\S+|www\.\S+|\b(bit\.ly|wa\.me|tinyurl\.com|t\.me)/\S*)', caseSensitive: false);
-  static final _secret = _words(['bvn', 'nin', 'pin', 'otp', 'password', 'cvv', 'card number', 'card details', 'token', 'code']);
-  static final _account = _words([
+  static final _secret = words(['upi pin', 'mpin', 'bvn', 'nin', 'pin', 'otp', 'password', 'cvv', 'card number', 'card details', 'token', 'code', 'aadhaar', 'aadhar', 'ओटीपी', 'पिन', 'पासवर्ड', 'कोड']);
+  static final _account = words([
     'blocked', 'block', 'suspended', 'restricted', 'deactivated', 'closed', 'verify', 'verification',
-    'update your account', 'update your bvn', 'upgrade',
+    'update your account', 'update your bvn', 'upgrade', 'kyc', 'disconnected', 'ब्लॉक', 'केवाईसी', 'बंद हो',
   ]);
   static final _money = RegExp(
-    r'(₦\s?\d[\d,]*(\.\d+)?|\bN\s?\d[\d,]*(\.\d+)?\b|\bNGN\s?\d[\d,]*\b|\b\d[\d,]*(\.\d+)?\s?(naira|k)\b)',
+    r'(₦\s?\d[\d,]*(\.\d+)?|₹\s?\d[\d,]*(\.\d+)?|\bN\s?\d[\d,]*(\.\d+)?\b|\bNGN\s?\d[\d,]*\b|\bRs\.?\s?\d[\d,]*(\.\d+)?|\bINR\s?\d[\d,]*'
+    r'|\b\d[\d,]*(\.\d+)?\s?(naira|k|lakh|crore|rupees?|rupaye)\b|\d[\d,]*\s?(रुपये|रुपए|लाख))',
     caseSensitive: false,
+    unicode: true,
   );
-  static final _prize = _words(['you have won', 'you won', 'winner', 'prize', 'promo', 'congratulations']);
-  static final _phone = RegExp(r'(\+?234|\b0)[789][01]\d[\s-]?\d{3}[\s-]?\d{4}\b');
+  static final _prize = wholeWord(prizePattern);
+  static final _phone = RegExp(r'(\+?234|\b0)[789][01]\d[\s-]?\d{3}[\s-]?\d{4}\b|(?<![\d+])(\+91[\s-]?)?[6-9]\d{4}[\s-]?\d{5}(?!\d)');
 
   /// Marks for [text]; secret words only when the rules found a request for one.
   static List<Mark> find(String text, [List<Finding>? findings]) {
