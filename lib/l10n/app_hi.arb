@@ -221,7 +221,7 @@
   "aboutVersion": "संस्करण {arg1}",
   "aboutModel": "सुरक्षा जाँच Gemma करता है, जो Google का एक AI मॉडल है और इसी फ़ोन पर चलता है।",
   "aboutFont": "टेक्स्ट फ़ॉन्ट: Braille Institute का Atkinson Hyperlegible Next, SIL Open Font License 1.1 के तहत।",
-  "aboutVoice": "अंग्रेज़ी आवाज़: ElevenLabs. हिन्दी आवाज़: eSpeak NG से बनाई गई।",
+  "aboutVoice": "आवाज़: ElevenLabs.",
   "aboutLicences": "लाइसेंस",
   "tabHome": "होम",
   "tabCheck": "जाँचें",

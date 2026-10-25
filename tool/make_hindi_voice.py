@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
-"""Records the Hindi warning clips in assets/voice/ from the Hindi strings in lib/l10n/app_hi.arb.
+"""Makes the 12 Hindi warning clips in assets/voice/ (scam, careful, otp x mummy, daddy, grandma, neutral).
 
-The clips say exactly what the warning screen says: the headline (with Mummy/Daddy/Grandma, or
-none for the neutral title) and the body. Uses eSpeak NG (offline, free to redistribute the
-audio) and ffmpeg. Re-run after changing the Hindi warning strings:
+Two ways:
 
+    # From a recording (what Argus ships: the ElevenLabs voice in tool/voice/). The one
+    # recording is used for every Hindi warning, loudness-matched to the English clips.
+    python3 tool/make_hindi_voice.py --from tool/voice/hindi_warning_elevenlabs.mp3
+
+    # Synthesised with eSpeak NG from the Hindi strings in lib/l10n/app_hi.arb, so each clip
+    # says exactly what its warning screen says (sounds robotic):
     sudo apt-get install espeak-ng ffmpeg
     python3 tool/make_hindi_voice.py
 """
+import argparse
 import json
 import pathlib
 import subprocess
@@ -33,6 +38,14 @@ def sentences(level: str, title: str | None) -> str:
     return f"{head} {body}"
 
 
+# Same format and loudness as the English ElevenLabs clips (44.1 kHz mono MP3, 128 kbps)
+ENCODE = ["-ac", "1", "-ar", "44100", "-b:a", "128k"]
+
+
+def from_recording(source: pathlib.Path, dest: pathlib.Path) -> None:
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(source), "-af", "acompressor=threshold=-28dB:ratio=4:attack=5:release=120:makeup=2,loudnorm=I=-9:TP=-0.5:LRA=6,volume=2dB,alimiter=limit=0.95:level=false", *ENCODE, str(dest)], check=True)
+
+
 def record(text: str, dest: pathlib.Path) -> None:
     with tempfile.TemporaryDirectory() as tmp:
         wav = pathlib.Path(tmp) / "clip.wav"
@@ -46,12 +59,19 @@ def record(text: str, dest: pathlib.Path) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--from", dest="source", type=pathlib.Path, help="a Hindi recording to use for every warning")
+    args = parser.parse_args()
     for level in ("scam", "careful", "otp"):
         for key, title in TITLES.items():
             dest = OUT / f"{level}_hi_{key}.mp3"
-            text = sentences(level, title)
-            record(text, dest)
-            print(f"{dest.name}: {text}")
+            if args.source:
+                from_recording(args.source, dest)
+                print(f"{dest.name}: from {args.source.name}")
+            else:
+                text = sentences(level, title)
+                record(text, dest)
+                print(f"{dest.name}: {text}")
 
 
 if __name__ == "__main__":
