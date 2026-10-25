@@ -16,6 +16,10 @@ Gemma checker, live scam alerts and its own package name (com.sudhanshumatrix.ar
 
 Third-party material included in Argus:
 
+0. Hindi voice clips (assets/voice/*_hi_*.mp3) were synthesised with eSpeak NG
+   (https://github.com/espeak-ng/espeak-ng) by tool/make_hindi_voice.py. eSpeak NG is
+   GPL-3.0; the audio it produces is not covered by that licence.
+
 1. Gemma (the on-device model shipped in the standard and lite APKs)
    The full Gemma notice, use restrictions, Terms of Use and Prohibited Use Policy
    are at the end of this file, and in the app under About.

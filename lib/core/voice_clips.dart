@@ -3,11 +3,10 @@ import 'parent_title.dart';
 import 'verdict.dart';
 
 /// Names of the bundled clips in assets/voice: `{level}_{language}_{title}.mp3`, e.g.
-/// `scam_en_mummy.mp3`. Only [recorded] languages ship clips: 3 levels × 4 titles = 12 files.
-/// Hindi clips aren't recorded yet, so Hindi asks for its own clips first and then falls back
-/// to English; adding `scam_hi_mummy.mp3` and friends (and listing them in [recorded]) is enough.
+/// `scam_hi_mummy.mp3`. 3 levels × 4 titles × 2 languages = 24 files. English clips are by
+/// ElevenLabs; Hindi clips come from tool/make_hindi_voice.py.
 abstract final class VoiceClips {
-  static const recorded = {Language.english};
+  static const recorded = {Language.english, Language.hindi};
 
   /// The clip for this parent, then the neutral one, in the parent's language and then in
   /// English. Missing clips are skipped by the player. Empty for NONE.

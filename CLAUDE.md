@@ -10,7 +10,7 @@ internet), online (model download + live alerts), demo (warnings and live alerts
 - Flutter (stable 3.47), Dart, Material 3. Android only.
 - `lib/core/`: the scam engine. Pure Dart: no Flutter, plugin or Android imports.
 - `lib/app/`: settings, alerting, listeners (SMS via another_telephony, WhatsApp via
-  flutter_notification_listener), voice (audioplayers + flutter_tts for Hindi), notifications
+  flutter_notification_listener), voice (audioplayers; Hindi clips from tool/make_hindi_voice.py), notifications
   (flutter_local_notifications), Gemma (flutter_edge_ai + LiteRT-LM), live alerts (Firebase Messaging).
 - `backend/`: the Go live-alert server (standard library only). `go test ./...` must pass.
 - `lib/ui/`: screens. No business logic in widgets.

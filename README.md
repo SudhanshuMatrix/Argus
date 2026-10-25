@@ -61,7 +61,7 @@ The Demo APK only asks for notifications and the full-screen warning.
 4. **The AI checker** (Gemma 3 1B, on the phone) looks at what the rules can't decide. Its answer only counts when the rules can see something concrete, like a link, a phone number or a money request, so it can't raise false alarms on family chat, and no trick inside a message can switch the rules off.
 5. **Safety floor:** messages with two or more warning signs get a quieter "be careful" note.
 6. **Fixed reasons:** every warning explains itself in a fixed sentence ("It has a link and says your account is blocked."), and the warning screen marks the dangerous parts of the message. Links are shown but can't be tapped.
-7. **Voice:** English uses the bundled ElevenLabs clips; Hindi uses the phone's own offline text-to-speech voice.
+7. **Voice:** recorded warning clips ship inside the app, in English (ElevenLabs) and Hindi (eSpeak NG, made with `tool/make_hindi_voice.py`), so the spoken warning works the same on every phone, offline.
 
 ## Live scam alerts
 
@@ -71,7 +71,7 @@ The Online and Demo APKs can receive a scam warning sent to every phone at once 
 
 - Messages only, not phone calls. Photos and voice notes aren't checked.
 - A WhatsApp chat that is open on screen is missed (WhatsApp shows no notification for it).
-- The Hindi voice needs the phone's Hindi text-to-speech voice (most phones have it; otherwise the English clip plays) and follows the media volume.
+- The Hindi clips are made with eSpeak NG and sound synthetic; re-run `tool/make_hindi_voice.py` with a better voice to replace them.
 - It can be wrong, and it never says a message is safe.
 
 ## Build from source
@@ -92,5 +92,5 @@ Code map: `lib/core/` is the scam engine (pure Dart, tested in `test/core/`), `l
 
 - **Based on [ScamGuard](https://github.com/abgolor/ScamGuard)** by Abraham Golor, used and modified with the author's permission. See [NOTICE](NOTICE).
 - **Gemma** by Google. Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms. The full terms, the Prohibited Use Policy and the required notice are in [NOTICE](NOTICE) and in the app under About.
-- **Voice by ElevenLabs.** The English warning clips were generated once with ElevenLabs and ship inside the app; no voice service is called at run time.
+- **Voice by ElevenLabs** (English) and **eSpeak NG** (Hindi). The warning clips were generated once and ship inside the app; no voice service is called at run time.
 - **Atkinson Hyperlegible Next** font by the Braille Institute, under the SIL Open Font License 1.1 (see NOTICE).

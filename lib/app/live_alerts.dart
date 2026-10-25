@@ -59,7 +59,7 @@ abstract final class LiveAlerts {
       final id = key.hashCode & 0x3FFFFFFF;
       AlertBus.publish(id, alert);
       await Notifier.show(id, alert, settings, l);
-      await _voice.play(Level.scam, settings.language, settings.title, loud: true, l: l, customName: settings.customName);
+      await _voice.play(Level.scam, settings.language, settings.title, loud: true);
     } catch (_) {
       // A broken alert must never crash the app
     }
