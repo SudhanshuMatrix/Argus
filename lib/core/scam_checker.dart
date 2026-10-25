@@ -58,6 +58,7 @@ abstract final class ScamChecker {
       HardRule.prizeFee => ReasonCode.tooGoodOffer,
       HardRule.investmentMoney => ReasonCode.tooGoodOffer,
       HardRule.callOfficial => ReasonCode.fakeOfficial,
+      HardRule.officialThreatMoney => ReasonCode.fakeOfficial,
     };
     return CheckResult(Verdict(Level.scam, reasonCode: reason), DecidedBy.hardRule, RedFlags.find(text).length, findings: Findings.find(text));
   }
