@@ -39,7 +39,7 @@ abstract final class Guard {
       AlertBus.publish(id, alert);
       await Notifier.show(id, alert, settings, l);
       if (_carefulLimit.allow(alert.level, alert.chatId, DateTime.now())) {
-        await _voice.play(alert.level, settings.language, settings.title, loud: settings.speakOnSilent, l: l, customName: settings.customName);
+        await _voice.play(alert.level, settings.language, settings.title, loud: settings.speakOnSilent);
       }
       if (plan.familySms) await FamilySms.send(settings, _store);
       return (id, alert);

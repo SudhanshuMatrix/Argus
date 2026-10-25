@@ -402,7 +402,7 @@
   },
   "aboutModel": "The safety checker is Gemma, an AI model by Google, running on this phone.",
   "aboutFont": "Text font: Atkinson Hyperlegible Next by the Braille Institute, under the SIL Open Font License 1.1.",
-  "aboutVoice": "Voice by ElevenLabs.",
+  "aboutVoice": "English voice by ElevenLabs. Hindi voice made with eSpeak NG.",
   "aboutLicences": "Licences",
   "tabHome": "Home",
   "tabCheck": "Check",

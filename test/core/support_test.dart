@@ -154,15 +154,15 @@ void main() {
       expect(VoiceClips.candidates(Level.scam, Language.english, ParentTitle.mummy), ['scam_en_mummy', 'scam_en_neutral']);
     });
 
-    test('Hindi falls back to the English clips until Hindi ones are recorded', () {
-      expect(VoiceClips.candidates(Level.scam, Language.hindi, ParentTitle.mummy), ['scam_en_mummy', 'scam_en_neutral']);
+    test('Hindi plays its own clip, then neutral, then English', () {
+      expect(VoiceClips.candidates(Level.scam, Language.hindi, ParentTitle.mummy), ['scam_hi_mummy', 'scam_hi_neutral', 'scam_en_mummy', 'scam_en_neutral']);
     });
 
     test('neutral title has one candidate', () => expect(VoiceClips.candidates(Level.otp, Language.english, ParentTitle.neutral), ['otp_en_neutral']));
     test('NONE has no clip', () => expect(VoiceClips.candidates(Level.none, Language.english, ParentTitle.daddy), isEmpty));
 
     test('every clip is bundled', () {
-      expect(VoiceClips.all().toSet().length, 12);
+      expect(VoiceClips.all().toSet().length, 24);
       final missing = VoiceClips.all().where((c) => !File('assets/voice/$c.mp3').existsSync()).toList();
       expect(missing, isEmpty);
     });

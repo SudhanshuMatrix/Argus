@@ -152,8 +152,6 @@ jobs:
           "$AAPT2" dump xmltree --file AndroidManifest.xml "$APK" > manifest.txt
           fail() { echo "::error::${{ matrix.name }} APK: $1"; exit 1; }
           if grep -qE "android.permission.ACCESS_(COARSE|FINE)_LOCATION" permissions.txt; then fail "must not ask for location"; fi
-          # Android 11+ hides the text-to-speech engine without this, and the Hindi voice goes silent
-          grep -q "android.intent.action.TTS_SERVICE" manifest.txt || fail "must declare the TTS_SERVICE query (Hindi voice)"
           case "${{ matrix.flavor }}" in
             offline)
               if grep -q "android.permission.INTERNET" permissions.txt; then fail "must not have the INTERNET permission"; fi ;;
