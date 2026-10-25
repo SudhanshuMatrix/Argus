@@ -5,7 +5,10 @@ import 'verdict.dart';
 
 enum SourceType {
   sms('SMS'),
-  whatsapp('WhatsApp');
+  whatsapp('WhatsApp'),
+
+  /// A scam alert sent to every phone from the Argus server (Online and Demo builds).
+  live('Argus');
 
   const SourceType(this.label);
   final String label;

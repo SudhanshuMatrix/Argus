@@ -1,4 +1,4 @@
-package com.ajayinnovations.argus
+package com.sudhanshumatrix.argus
 
 import io.flutter.embedding.android.FlutterActivity
 

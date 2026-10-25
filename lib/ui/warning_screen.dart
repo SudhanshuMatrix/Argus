@@ -81,7 +81,7 @@ class _WarningScreenState extends State<WarningScreen> {
                 Expanded(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(foregroundColor: foreground, side: BorderSide(color: foreground, width: 2)),
-                    onPressed: () => _voice.play(level, s.language, s.title, loud: true),
+                    onPressed: () => _voice.play(level, s.language, s.title, loud: true, l: l, customName: s.customName),
                     child: Text(l.warningHearAgain, textAlign: TextAlign.center),
                   ),
                 ),

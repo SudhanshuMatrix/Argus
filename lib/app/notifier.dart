@@ -51,12 +51,15 @@ abstract final class Notifier {
     if (!_ready) await init();
     final text = AlertText(l);
     final level = alert.level;
-    final headline = text.headline(level, s.title, s.customName);
-    final body = [text.body(level, s.familyName), ?text.reason(alert.findings, alert.verdict.reasonCode), l.notificationTapToSee].join('\n');
+    final live = alert.source == SourceType.live;
+    final headline = live ? l.liveAlertHeadline : text.headline(level, s.title, s.customName);
+    final body = live
+        ? [l.liveAlertBody, ?alert.preview, l.notificationTapToSee].join('\n')
+        : [text.body(level, s.familyName), ?text.reason(alert.findings, alert.verdict.reasonCode), l.notificationTapToSee].join('\n');
     final scam = level == Level.scam;
     final details = AndroidNotificationDetails(
-      scam ? 'argus_scam' : 'argus_careful',
-      scam ? l.channelScam : l.channelCareful,
+      live ? 'argus_live' : (scam ? 'argus_scam' : 'argus_careful'),
+      live ? l.channelLive : (scam ? l.channelScam : l.channelCareful),
       importance: scam ? Importance.max : Importance.defaultImportance,
       priority: scam ? Priority.max : Priority.defaultPriority,
       category: scam ? AndroidNotificationCategory.alarm : AndroidNotificationCategory.message,
