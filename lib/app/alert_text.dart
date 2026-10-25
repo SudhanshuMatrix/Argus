@@ -52,6 +52,7 @@ class AlertText {
     return switch (source) {
       SourceType.sms => l.fromSms(sender),
       SourceType.whatsapp => l.fromWhatsapp(sender),
+      SourceType.live => l.liveAlertFrom,
     };
   }
 

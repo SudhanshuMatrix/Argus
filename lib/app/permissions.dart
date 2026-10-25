@@ -1,25 +1,35 @@
 import 'package:permission_handler/permission_handler.dart';
 
+import 'edition.dart';
+import 'gemma.dart';
 import 'listeners.dart';
 import 'notifier.dart';
 
 /// What Argus needs to protect the phone, checked fresh each time. Never throws.
 class ProtectionStatus {
-  const ProtectionStatus({required this.sms, required this.notifications, required this.whatsapp, required this.battery});
+  const ProtectionStatus({required this.sms, required this.notifications, required this.whatsapp, required this.battery, this.model = false});
 
   final bool sms;
   final bool notifications;
   final bool whatsapp;
   final bool battery;
 
-  bool get allOn => sms && notifications && whatsapp;
+  /// The AI safety checker is installed (Offline and Online builds).
+  final bool model;
 
-  static Future<ProtectionStatus> check() async => ProtectionStatus(
-    sms: await _granted(Permission.sms),
-    notifications: await _granted(Permission.notification),
-    whatsapp: await Listeners.hasWhatsAppAccess(),
-    battery: await _granted(Permission.ignoreBatteryOptimizations),
-  );
+  /// What this build needs to protect the phone. The Demo build only shows warnings.
+  bool get allOn => Edition.current.checksMessages ? sms && notifications && whatsapp : notifications;
+
+  static Future<ProtectionStatus> check() async {
+    final checks = Edition.current.checksMessages;
+    return ProtectionStatus(
+      sms: checks && await _granted(Permission.sms),
+      notifications: await _granted(Permission.notification),
+      whatsapp: checks && await Listeners.hasWhatsAppAccess(),
+      battery: await _granted(Permission.ignoreBatteryOptimizations),
+      model: Edition.current.usesModel && await GemmaModel.isInstalled(),
+    );
+  }
 
   static Future<bool> _granted(Permission p) async {
     try {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../app/app_state.dart';
+import '../app/edition.dart';
+import '../app/gemma.dart';
 import '../app/listeners.dart';
 import '../app/permissions.dart';
 import '../core/profile_form.dart';
@@ -10,7 +12,13 @@ import 'profile_fields.dart';
 import 'test_alert.dart';
 import 'widgets.dart';
 
-enum _Step { welcome, who, sms, warnings, whatsapp, battery, maker, test }
+enum _Step { welcome, who, sms, warnings, whatsapp, battery, maker, model, test }
+
+/// The steps this build needs. The Demo build only asks for warnings.
+List<_Step> _stepsFor(Edition edition) => switch (edition) {
+  Edition.demo => const [_Step.welcome, _Step.who, _Step.warnings, _Step.test],
+  _ => [for (final step in _Step.values) if (step != _Step.model || edition.usesModel) step],
+};
 
 /// The ten-minute setup the son or daughter does once: who it's for, every permission with a
 /// plain reason, the phone-maker battery steps, and a real test alert.
@@ -22,7 +30,12 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> with WidgetsBindingObserver {
-  var _step = _Step.welcome;
+  final _steps = _stepsFor(Edition.current);
+  var _index = 0;
+  _Step get _step => _steps[_index];
+  int? _modelPercent;
+  bool _modelBusy = false;
+  bool _modelFailed = false;
   late ProfileForm _form = AppState.instance.settings.form;
   bool _tried = false;
   bool _testSent = false;
@@ -64,12 +77,30 @@ class _SetupScreenState extends State<SetupScreen> with WidgetsBindingObserver {
       await AppState.instance.update(AppState.instance.settings.withForm(_form));
     }
     if (_step == _Step.whatsapp) await Listeners.startWhatsApp();
-    if (_step == _Step.values.last) return _finish();
-    setState(() => _step = _Step.values[_step.index + 1]);
+    if (_index == _steps.length - 1) return _finish();
+    setState(() => _index++);
+  }
+
+  Future<void> _getModel() async {
+    setState(() {
+      _modelBusy = true;
+      _modelFailed = false;
+      _modelPercent = null;
+    });
+    final ok = await GemmaModel.install(onProgress: (p) {
+      if (mounted) setState(() => _modelPercent = p);
+    });
+    await _refresh();
+    if (mounted) {
+      setState(() {
+        _modelBusy = false;
+        _modelFailed = !ok;
+      });
+    }
   }
 
   Future<void> _finish() async {
-    await Listeners.start();
+    if (Edition.current.checksMessages) await Listeners.start();
     await AppState.instance.update(AppState.instance.settings.copyWith(setupComplete: true));
   }
 
@@ -88,7 +119,7 @@ class _SetupScreenState extends State<SetupScreen> with WidgetsBindingObserver {
     final l = AppLocalizations.of(context);
     final t = Theme.of(context).textTheme;
     final state = AppState.instance;
-    final last = _step == _Step.values.last;
+    final last = _index == _steps.length - 1;
 
     Widget title(String s) => Padding(padding: const EdgeInsets.only(top: 8, bottom: 12), child: Text(s, style: t.headlineMedium));
     Widget para(String s) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Text(s, style: t.bodyLarge));
@@ -100,7 +131,11 @@ class _SetupScreenState extends State<SetupScreen> with WidgetsBindingObserver {
     );
 
     final content = switch (_step) {
-      _Step.welcome => [title(l.setupWelcomeTitle), para(l.homeIntro), para(l.aboutOffline)],
+      _Step.welcome => [
+        title(l.setupWelcomeTitle),
+        para(Edition.current == Edition.demo ? l.demoIntro : l.homeIntro),
+        para(Edition.current == Edition.offline ? l.aboutOffline : l.aboutOfflineOnline),
+      ],
       _Step.who => [
         title(l.setupWhoTitle),
         ProfileFields(
@@ -155,6 +190,21 @@ class _SetupScreenState extends State<SetupScreen> with WidgetsBindingObserver {
         para(l.setupMakerTranssionStep2),
         OutlinedButton(onPressed: Permissions.openSettings, child: Text(l.setupOpenAppInfo)),
       ],
+      _Step.model => [
+        title(l.setupReadyTitle),
+        para(Edition.current.bundlesModel ? l.setupModelWhyOffline : l.setupModelWhyOnline),
+        if (_status.model)
+          action(l.setupModelButton, true, () async => null)
+        else if (_modelBusy) ...[
+          LinearProgressIndicator(value: _modelPercent == null ? null : _modelPercent! / 100, color: ArgusColors.pine, minHeight: 12),
+          const Gap(8),
+          para(_modelPercent == null ? l.setupReadyChecking : l.setupReadyProgress(_modelPercent!)),
+          para(l.setupReadyKeepOpen),
+        ] else
+          FilledButton(onPressed: _getModel, child: Text(l.setupModelButton)),
+        if (_modelFailed) ...[const Gap(), Text(l.setupReadyFailed, style: const TextStyle(fontSize: 18, color: ArgusColors.alarm))],
+        if (!_status.model && !Edition.current.bundlesModel) ...[const Gap(), para(l.setupModelSkipNote)],
+      ],
       _Step.test => [
         title(l.setupTestTitle),
         para(l.setupTestWhy),
@@ -166,12 +216,12 @@ class _SetupScreenState extends State<SetupScreen> with WidgetsBindingObserver {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l.setupStep(_step.index + 1, _Step.values.length)),
-        leading: _step == _Step.welcome ? null : IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => setState(() => _step = _Step.values[_step.index - 1])),
+        title: Text(l.setupStep(_index + 1, _steps.length)),
+        leading: _index == 0 || _modelBusy ? null : IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => setState(() => _index--)),
       ),
       body: ArgusPage(
-        bottom: FilledButton(onPressed: _next, child: Text(_step == _Step.welcome ? l.setupStart : last ? l.setupFinish : l.setupNext)),
-        children: [LinearProgressIndicator(value: (_step.index + 1) / _Step.values.length, color: ArgusColors.pine, minHeight: 8), const Gap(8), ...content],
+        bottom: FilledButton(onPressed: _modelBusy ? null : _next, child: Text(_index == 0 ? l.setupStart : last ? l.setupFinish : l.setupNext)),
+        children: [LinearProgressIndicator(value: (_index + 1) / _steps.length, color: ArgusColors.pine, minHeight: 8), const Gap(8), ...content],
       ),
     );
   }

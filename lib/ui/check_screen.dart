@@ -78,7 +78,7 @@ class _CheckScreenState extends State<CheckScreen> {
             if (result.level != Level.none) ...[
               const Gap(),
               OutlinedButton.icon(
-                onPressed: () => _voice.play(result.level, s.language, s.title, loud: true),
+                onPressed: () => _voice.play(result.level, s.language, s.title, loud: true, l: l, customName: s.customName),
                 icon: const Icon(Icons.volume_up, size: 28),
                 label: Text(l.checkHearIt),
               ),

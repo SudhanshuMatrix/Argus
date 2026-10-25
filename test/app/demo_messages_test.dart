@@ -12,6 +12,11 @@ const demo = <(String, Level)>[
   ("Good evening ma'am, my cousin's crypto group helps members double your money in 10 days. Should I add you?", Level.careful),
   ('Your OTP is 482913. It is valid for 5 minutes. Do not share this code with anyone.', Level.otp),
   ('Good morning Mummy, we will visit you on Sunday after lunch. Love you!', Level.none),
+  ('आपका बैंक खाता आज ब्लॉक हो जाएगा। केवाईसी अपडेट करने के लिए इस लिंक पर क्लिक करें: bit.ly/kyc-sbi', Level.scam),
+  ('SBI से बोल रहे हैं। आपके फोन पर आया OTP बताइए, वरना आपका खाता बंद हो जाएगा।', Level.scam),
+  ('Hi Mummy, ye mera naya number hai. Mera phone kho gaya. Jaldi se 5000 rupaye bhej do, urgent hai.', Level.scam),
+  ('Dear consumer, your electricity power will be disconnected tonight at 9:30 pm. Please contact our electricity officer immediately on 9876543210.', Level.scam),
+  ('This is CBI. Your Aadhaar is linked to a money laundering case and a warrant is issued. Send ₹50,000 to the RBI safe account now to avoid arrest.', Level.scam),
 ];
 
 void main() {
