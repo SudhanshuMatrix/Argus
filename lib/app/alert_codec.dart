@@ -7,10 +7,16 @@ import '../core/verdict.dart';
 /// Turns an [Alert] into plain values and back.
 ///
 /// [toPayload] is what goes into a notification (and so into an Android Intent): the verdict
-/// and the finding codes only, never the message text or the sender. [toPrivateMap] adds them,
+/// and the finding codes only, never the text or the sender of a received message. (Live
+/// alerts are the exception: their text is a public warning from the Argus server.) [toPrivateMap] adds them,
 /// and is only ever sent between isolates of this process in memory.
 abstract final class AlertCodec {
-  static String toPayload(int id, Alert alert) => jsonEncode({'id': id, ..._public(alert)});
+  static String toPayload(int id, Alert alert) => jsonEncode({
+    'id': id,
+    ..._public(alert),
+    // A live alert's text was written by the Argus team for everyone, not received privately
+    if (alert.source == SourceType.live) 'message': alert.message,
+  });
 
   static Map<String, Object?> toPrivateMap(int id, Alert alert) => {
     'id': id,

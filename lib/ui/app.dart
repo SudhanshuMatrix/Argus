@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../app/alert_bus.dart';
 import '../app/alert_codec.dart';
 import '../app/app_state.dart';
+import '../app/edition.dart';
 import '../app/listeners.dart';
 import '../app/notifier.dart';
 import '../core/alert.dart';
@@ -54,7 +55,7 @@ class _ArgusAppState extends State<ArgusApp> with WidgetsBindingObserver {
     await Notifier.init(onTap: (NotificationResponse r) => _openFromPayload(r.payload));
     final launch = await Notifier.launchPayload();
     if (launch != null) WidgetsBinding.instance.addPostFrameCallback((_) => _openFromPayload(launch));
-    if (state.settings.setupComplete) await Listeners.start();
+    if (state.settings.setupComplete && Edition.current.checksMessages) await Listeners.start();
   }
 
   @override

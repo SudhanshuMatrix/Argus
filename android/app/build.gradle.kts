@@ -15,7 +15,7 @@ val keyProperties = Properties().apply {
 fun signing(name: String, env: String): String? = keyProperties.getProperty(name) ?: System.getenv(env)
 
 android {
-    namespace = "com.ajayinnovations.argus"
+    namespace = "com.sudhanshumatrix.argus"
     // permission_handler_android needs 37
     compileSdk = maxOf(flutter.compileSdkVersion, 37)
     ndkVersion = flutter.ndkVersion
@@ -28,12 +28,48 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ajayinnovations.argus"
-        // Android 8+, like the original app; the adaptive icon needs 26
-        minSdk = 26
+        applicationId = "com.sudhanshumatrix.argus"
+        // Android 11+: the on-device AI (LiteRT-LM) needs API 30 and 64-bit ARM
+        minSdk = 30
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    // Three APKs from one code base (see lib/app/edition.dart):
+    //  offline: no internet at all, Gemma inside the APK (src/offline/assets/models/)
+    //  online:  downloads Gemma once and receives live scam alerts from the Argus server
+    //  demo:    for recording demos: warnings and live alerts only, no SMS or WhatsApp reading
+    flavorDimensions += "edition"
+    productFlavors {
+        create("offline") {
+            dimension = "edition"
+            resValue("string", "app_name", "Argus Offline")
+        }
+        create("online") {
+            dimension = "edition"
+            applicationIdSuffix = ".online"
+            resValue("string", "app_name", "Argus")
+        }
+        create("demo") {
+            dimension = "edition"
+            applicationIdSuffix = ".demo"
+            versionNameSuffix = "-demo"
+            resValue("string", "app_name", "Argus Demo")
+        }
+    }
+
+    buildFeatures {
+        // The flavors set their launcher name with resValue, which AGP 9 turns off by default
+        resValues = true
+    }
+
+    // The model barely compresses; storing it raw makes the first-launch copy fast
+    androidResources {
+        noCompress += "litertlm"
     }
 
     signingConfigs {

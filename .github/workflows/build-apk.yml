@@ -8,12 +8,60 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # attach the APK to a GitHub Release on v* tags
+  contents: write # publish the APKs on the "latest-build" release and on v* tag releases
+
+env:
+  FLUTTER_VERSION: '3.47.8'
+  # The model the Offline APK carries (and the Online APK downloads)
+  MODEL_FILE: gemma3-1b-it-int4.litertlm
+  MODEL_HF_URL: ${{ vars.ARGUS_MODEL_HF_URL || 'https://huggingface.co/litert-community/Gemma3-1B-IT/resolve/main/Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm' }}
+  MODEL_RELEASE: model-gemma3-1b
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: backend/go.mod
+          cache: false
+      - run: test -z "$(gofmt -l .)" || { gofmt -l .; echo "::error::run gofmt"; exit 1; }
+      - run: go vet ./...
+      - run: go test ./...
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - flavor: offline
+            name: Offline
+          - flavor: online
+            name: Online
+          - flavor: demo
+            name: Demo
     steps:
       - uses: actions/checkout@v5
 
@@ -25,21 +73,47 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.47.8'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
-      - name: Get packages
-        run: flutter pub get
+      - run: flutter pub get
 
-      - name: Analyze
-        run: flutter analyze
+      # Offline only: put Gemma inside the APK. Needs the HF_TOKEN secret (a Hugging Face
+      # token from an account that accepted the Gemma licence). Without it, the Offline APK
+      # is built on the rules alone.
+      - name: Download Gemma for the Offline APK
+        id: model
+        if: matrix.flavor == 'offline'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::warning::No HF_TOKEN secret: the Offline APK is built without Gemma (rules only)"
+            echo "bundled=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          dest="android/app/src/offline/assets/models/$MODEL_FILE"
+          curl -fL --retry 3 -H "Authorization: Bearer $HF_TOKEN" -o "$dest" "$MODEL_HF_URL"
+          size=$(stat -c %s "$dest")
+          echo "Model: $size bytes"
+          if [ "$size" -lt 100000000 ]; then echo "::error::The model download is too small ($size bytes)"; exit 1; fi
+          echo "bundled=true" >> "$GITHUB_OUTPUT"
 
-      - name: Unit and widget tests
-        run: flutter test
+      # Online's in-app download comes from this release asset (the repo must be public, or
+      # set the ARGUS_MODEL_URL variable to another host)
+      - name: Publish the model for the Online APK
+        if: matrix.flavor == 'offline' && steps.model.outputs.bundled == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$MODEL_RELEASE" --json assets -q '.assets[].name' 2>/dev/null | grep -qx "$MODEL_FILE"; then
+            echo "Model already published"; exit 0
+          fi
+          gh release view "$MODEL_RELEASE" >/dev/null 2>&1 || gh release create "$MODEL_RELEASE" --title "Gemma 3 1B model for Argus Online" --notes "Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms. Unmodified Gemma 3 1B (int4, LiteRT-LM) from huggingface.co/litert-community/Gemma3-1B-IT. Argus Online downloads it once on first run."
+          gh release upload "$MODEL_RELEASE" "android/app/src/offline/assets/models/$MODEL_FILE" --clobber
 
       # Optional: sign with your own key so updates install over the previous version.
-      # Add the secrets ARGUS_KEYSTORE_BASE64, ARGUS_KEYSTORE_PASSWORD, ARGUS_KEY_ALIAS and
-      # ARGUS_KEY_PASSWORD. Without them the APK is signed with a throwaway debug key.
+      # Secrets: ARGUS_KEYSTORE_BASE64, ARGUS_KEYSTORE_PASSWORD, ARGUS_KEY_ALIAS, ARGUS_KEY_PASSWORD.
       - name: Restore signing key
         env:
           KEYSTORE_BASE64: ${{ secrets.ARGUS_KEYSTORE_BASE64 }}
@@ -48,38 +122,103 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/argus-release.jks"
           echo "ARGUS_KEYSTORE_PATH=$RUNNER_TEMP/argus-release.jks" >> "$GITHUB_ENV"
 
-      - name: Build release APK
+      - name: Build the ${{ matrix.name }} APK
         env:
           ARGUS_KEYSTORE_PASSWORD: ${{ secrets.ARGUS_KEYSTORE_PASSWORD }}
           ARGUS_KEY_ALIAS: ${{ secrets.ARGUS_KEY_ALIAS }}
           ARGUS_KEY_PASSWORD: ${{ secrets.ARGUS_KEY_PASSWORD }}
-        run: flutter build apk --release
-
-      - name: Check the privacy promise (no internet, no location)
+          FIREBASE_API_KEY: ${{ secrets.ARGUS_FIREBASE_API_KEY }}
+          FIREBASE_PROJECT_ID: ${{ secrets.ARGUS_FIREBASE_PROJECT_ID }}
+          FIREBASE_SENDER_ID: ${{ secrets.ARGUS_FIREBASE_SENDER_ID }}
+          FIREBASE_APP_ID: ${{ matrix.flavor == 'online' && secrets.ARGUS_FIREBASE_APP_ID_ONLINE || matrix.flavor == 'demo' && secrets.ARGUS_FIREBASE_APP_ID_DEMO || '' }}
+          MODEL_URL: ${{ vars.ARGUS_MODEL_URL || format('https://github.com/{0}/releases/download/{1}/{2}', github.repository, env.MODEL_RELEASE, env.MODEL_FILE) }}
+          MODEL_BUNDLED: ${{ steps.model.outputs.bundled || 'false' }}
         run: |
-          APK=build/app/outputs/flutter-apk/app-release.apk
+          defines=(--dart-define=ARGUS_MODEL_URL="$MODEL_URL" --dart-define=ARGUS_MODEL_BUNDLED="$MODEL_BUNDLED")
+          if [ "${{ matrix.flavor }}" != offline ]; then
+            if [ -n "$FIREBASE_APP_ID" ]; then
+              defines+=(--dart-define=ARGUS_FIREBASE_API_KEY="$FIREBASE_API_KEY" --dart-define=ARGUS_FIREBASE_PROJECT_ID="$FIREBASE_PROJECT_ID" --dart-define=ARGUS_FIREBASE_SENDER_ID="$FIREBASE_SENDER_ID" --dart-define=ARGUS_FIREBASE_APP_ID="$FIREBASE_APP_ID")
+            else
+              echo "::warning::No Firebase secrets: live scam alerts are off in this ${{ matrix.name }} APK (see docs/BACKEND.md)"
+            fi
+          fi
+          flutter build apk --release --flavor ${{ matrix.flavor }} --target-platform android-arm64 "${defines[@]}"
+
+      - name: Check the permissions
+        run: |
+          APK=build/app/outputs/flutter-apk/app-${{ matrix.flavor }}-release.apk
           AAPT2=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2
           "$AAPT2" dump permissions "$APK" | tee permissions.txt
-          if grep -E "android.permission.(INTERNET|ACCESS_(COARSE|FINE)_LOCATION)" permissions.txt; then
-            echo "::error::The release APK must not have the INTERNET or location permission"
-            exit 1
-          fi
+          "$AAPT2" dump xmltree --file AndroidManifest.xml "$APK" > manifest.txt
+          fail() { echo "::error::${{ matrix.name }} APK: $1"; exit 1; }
+          if grep -qE "android.permission.ACCESS_(COARSE|FINE)_LOCATION" permissions.txt; then fail "must not ask for location"; fi
+          case "${{ matrix.flavor }}" in
+            offline)
+              if grep -q "android.permission.INTERNET" permissions.txt; then fail "must not have the INTERNET permission"; fi ;;
+            online)
+              grep -q "android.permission.RECEIVE_SMS" permissions.txt || fail "must receive SMS"
+              grep -q "android.permission.INTERNET" permissions.txt || fail "needs INTERNET for live alerts and the model download" ;;
+            demo)
+              if grep -qE "android.permission.(RECEIVE_SMS|SEND_SMS|READ_SMS)" permissions.txt; then fail "must not have SMS permissions"; fi
+              if grep -q "NotificationListenerService" manifest.txt; then fail "must not read notifications"; fi ;;
+          esac
 
       - name: Name the APK
         run: |
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')
           mkdir -p dist
-          cp build/app/outputs/flutter-apk/app-release.apk "dist/Argus-$VERSION.apk"
-          sha256sum dist/*.apk | tee dist/SHA256SUMS.txt
+          cp build/app/outputs/flutter-apk/app-${{ matrix.flavor }}-release.apk "dist/Argus-${{ matrix.name }}-$VERSION.apk"
+          sha256sum dist/*.apk
 
-      - uses: actions/upload-artifact@v4
+      # A plain .apk (not a zip) on the run's page
+      - uses: actions/upload-artifact@v7
         with:
-          name: Argus-apk
-          path: dist/
+          path: dist/Argus-${{ matrix.name }}-*.apk
+          archive: false
+          compression-level: 0
           if-no-files-found: error
 
-      - name: Attach to the GitHub Release
+  release:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v8
+        with:
+          path: downloads
+
+      - name: Collect the APKs
+        run: |
+          mkdir -p dist
+          find downloads -name 'Argus-*.apk' -exec cp {} dist/ \;
+          # Stable names, so the download links never change
+          for f in dist/Argus-*-*.apk; do
+            edition=$(basename "$f" | cut -d- -f2)
+            cp "$f" "dist/Argus-$edition.apk"
+          done
+          (cd dist && sha256sum *.apk | tee SHA256SUMS.txt)
+          ls -la dist
+
+      # Rolling pre-release with direct .apk links, updated on every push to main
+      - name: Update the "latest-build" release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag -f latest-build "$GITHUB_SHA"
+          git push -f origin refs/tags/latest-build
+          notes="Latest build of main ($GITHUB_SHA). Install **Argus-Online.apk** for families, **Argus-Offline.apk** for no internet at all, **Argus-Demo.apk** to record demos. Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms."
+          gh release view latest-build >/dev/null 2>&1 || gh release create latest-build --prerelease --title "Latest build" --notes "$notes"
+          gh release edit latest-build --prerelease --notes "$notes"
+          gh release upload latest-build dist/Argus-Offline.apk dist/Argus-Online.apk dist/Argus-Demo.apk dist/SHA256SUMS.txt --clobber
+
+      - name: Attach to the version's release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*
+          files: |
+            dist/Argus-*-*.apk
+            dist/SHA256SUMS.txt

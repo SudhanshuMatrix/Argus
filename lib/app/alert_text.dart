@@ -52,6 +52,7 @@ class AlertText {
     return switch (source) {
       SourceType.sms => l.fromSms(sender),
       SourceType.whatsapp => l.fromWhatsapp(sender),
+      SourceType.live => l.liveAlertFrom,
     };
   }
 
@@ -78,12 +79,14 @@ class AlertText {
     FindingKind.urgency => l.findingUrgency,
   };
 
-  // BVN, NIN, OTP and PIN stay as these Latin acronyms in English and Hindi
+  // BVN, NIN, OTP, PIN, UPI PIN and Aadhaar stay in Latin letters in English and Hindi
   String _secret(Secret s) => switch (s) {
     Secret.bvn => 'BVN',
     Secret.nin => 'NIN',
     Secret.otp => 'OTP',
     Secret.pin => 'PIN',
+    Secret.upiPin => 'UPI PIN',
+    Secret.aadhaar => 'Aadhaar',
     Secret.password => l.secretPassword,
     Secret.card => l.secretCard,
     Secret.code => l.secretCode,

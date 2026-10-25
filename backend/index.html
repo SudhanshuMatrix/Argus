@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus live alerts</title>
+<style>
+  :root { color-scheme: light dark; --pine: #07594C; --alarm: #991B12; }
+  body { font: 18px/1.45 system-ui, sans-serif; max-width: 640px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 28px; margin: 8px 0 4px; }
+  label { display: block; font-weight: 600; margin: 16px 0 6px; }
+  input, textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 12px; border: 2px solid #8a94a6; border-radius: 10px; }
+  textarea { min-height: 140px; }
+  button { margin-top: 20px; width: 100%; min-height: 56px; font: inherit; font-weight: 700; color: #fff; background: var(--alarm); border: 0; border-radius: 12px; }
+  button:disabled { opacity: .6; }
+  #result { margin-top: 16px; font-weight: 600; }
+  .ok { color: var(--pine); } .err { color: var(--alarm); }
+  small { color: #6b788c; }
+</style>
+</head>
+<body>
+<h1>Argus live scam alert</h1>
+<p>Sends this message to every Argus Online and Argus Demo phone as a red full-screen warning.</p>
+<form id="f">
+  <label for="u">Username</label>
+  <input id="u" autocomplete="username" required>
+  <label for="p">Password</label>
+  <input id="p" type="password" autocomplete="current-password" required>
+  <label for="m">Scam message to warn about</label>
+  <textarea id="m" maxlength="1000" required placeholder="Dear customer, your SBI account is blocked. Click bit.ly/... to update your KYC."></textarea>
+  <small><span id="n">0</span>/1000</small>
+  <button id="b" type="submit">Send to every phone</button>
+</form>
+<p id="result" role="status"></p>
+<script>
+  const f = document.getElementById('f'), out = document.getElementById('result'), m = document.getElementById('m');
+  m.addEventListener('input', () => { document.getElementById('n').textContent = m.value.length; });
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const b = document.getElementById('b'); b.disabled = true; out.textContent = 'Sending…'; out.className = '';
+    const auth = btoa(String.fromCharCode(...new TextEncoder().encode(document.getElementById('u').value + ':' + document.getElementById('p').value)));
+    try {
+      const r = await fetch('/api/alerts', { method: 'POST', headers: { 'Authorization': 'Basic ' + auth, 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m.value }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) { out.textContent = 'Sent. Every phone should show it within a few seconds (alert ' + j.id + ').'; out.className = 'ok'; }
+      else { out.textContent = j.error || ('Failed: HTTP ' + r.status); out.className = 'err'; }
+    } catch (err) { out.textContent = 'Could not reach the server.'; out.className = 'err'; }
+    b.disabled = false;
+  });
+</script>
+</body>
+</html>
