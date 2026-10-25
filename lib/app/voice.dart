@@ -31,14 +31,20 @@ class VoicePlayer {
   Future<bool> _speakHindi(Level level, ParentTitle title, String customName, AppLocalizations l) async {
     try {
       final tts = _tts ??= FlutterTts();
+      // Wait for the whole sentence: a background alert's isolate may end as soon as this returns
+      await tts.awaitSpeakCompletion(true);
+      // "Available" is not enough: the Hindi voice data must also be on the phone (LANG_MISSING_DATA)
       if (await tts.isLanguageAvailable('hi-IN') != true) return false;
-      await tts.setLanguage('hi-IN');
+      if (await tts.setLanguage('hi-IN') != 1) return false;
       await tts.setSpeechRate(0.45); // slower is clearer for older ears
       await tts.setVolume(1.0);
       final text = AlertText(l);
       final words = '${text.headline(level, title, customName)} ${text.body(level, '')}';
-      await tts.speak(words);
-      return true;
+      // 1 means spoken; anything else (no engine, no voice) falls back to the English clip.
+      // The plugin can hold a refused call forever, so give up waiting after a while; by then
+      // the sentence has been spoken or never will be, and a second voice must not start over it.
+      final spoken = await tts.speak(words).timeout(const Duration(seconds: 30), onTimeout: () => 1);
+      return spoken == 1;
     } catch (_) {
       return false;
     }

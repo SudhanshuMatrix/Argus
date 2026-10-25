@@ -53,6 +53,11 @@
     </application>
 
     <queries>
+        <!-- The Hindi voice: Android 11+ only lets an app reach the phone's text-to-speech
+             engine when it declares this. Without it the voice silently never plays. -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
         <!-- The Call button opens the dialer -->
         <intent>
             <action android:name="android.intent.action.DIAL" />
