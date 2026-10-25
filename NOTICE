@@ -10,7 +10,8 @@ permission was given to the Argus owner; it is not an open-source licence and
 does not extend to third parties. Changes in Argus: the product was renamed
 from ScamGuard to Argus, the Nigerian Pidgin translation was replaced with
 Hindi, and the app was rewritten in Flutter (the scam rules are a Dart port of
-the original Kotlin engine).
+the original Kotlin engine), with Indian and Hindi scam rules, an on-device
+Gemma checker, live scam alerts and its own package name (com.sudhanshumatrix.argus).
 
 
 Third-party material included in Argus:
